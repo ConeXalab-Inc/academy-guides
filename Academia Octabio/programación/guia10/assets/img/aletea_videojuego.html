@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Vuelo entre obstáculos</title>
+<style>
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#dff5ff;font-family:Arial,Helvetica,sans-serif}
+  #game{position:relative;width:100%;height:100%;overflow:hidden}
+  canvas{display:block;width:100%;height:100%;touch-action:none}
+  .overlay{position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:rgba(9,31,59,.22);z-index:3}
+  .overlay.hidden{display:none}
+  .panel{background:rgba(255,255,255,.94);border:2px solid rgba(130,83,201,.35);border-radius:22px;padding:26px 34px;box-shadow:0 14px 30px rgba(21,52,95,.2);color:#15345f}
+  .panel h1{margin:0 0 8px;font-size:clamp(20px,3.4vw,38px);line-height:1.1}
+  .panel p{margin:0 0 20px;font-size:clamp(13px,1.6vw,20px);line-height:1.35;color:#4f647d}
+  .panel button{border:0;border-radius:999px;padding:12px 30px;background:#f28b2b;color:#fff;font:inherit;font-size:clamp(15px,1.8vw,22px);font-weight:900;cursor:pointer}
+  .panel button:hover{background:#df7a1d}
+  .score{position:absolute;top:5%;left:50%;transform:translateX(-50%);z-index:2;background:rgba(21,52,95,.9);color:#fff;border-radius:999px;padding:8px 22px;font-size:clamp(15px,2vw,24px);font-weight:900;letter-spacing:.02em}
+  .score b{color:#ffd15a}
+  .hint{position:absolute;bottom:5%;left:50%;transform:translateX(-50%);z-index:2;background:rgba(255,255,255,.88);color:#15345f;border-radius:999px;padding:7px 16px;font-size:clamp(11px,1.35vw,16px);font-weight:700;white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="game">
+  <canvas id="canvas" aria-label="Juego de vuelo entre obstáculos"></canvas>
+  <div class="score">★ PUNTOS <b id="score">0</b></div>
+  <div id="start" class="overlay">
+    <div class="panel">
+      <h1>¡A volar!</h1>
+      <p>Presiona el botón y usa <b>ESPACIO</b>, clic o toque para subir.</p>
+      <button id="play" type="button">Jugar</button>
+    </div>
+  </div>
+  <div id="over" class="overlay hidden">
+    <div class="panel">
+      <h1>Fin de la partida</h1>
+      <p>Conseguiste <b id="finalScore">0</b> puntos.</p>
+      <button id="restart" type="button">Volver a jugar</button>
+    </div>
+  </div>
+  <div id="hint" class="hint">ESPACIO / clic / toque para subir</div>
+</div>
+<script>
+(()=>{
+  const canvas=document.getElementById('canvas');
+  const ctx=canvas.getContext('2d');
+  const scoreEl=document.getElementById('score');
+  const finalScoreEl=document.getElementById('finalScore');
+  const startOverlay=document.getElementById('start');
+  const overOverlay=document.getElementById('over');
+  const playBtn=document.getElementById('play');
+  const restartBtn=document.getElementById('restart');
+  let W=800,H=600,dpr=1;
+  let state='start';
+  let plane, obstacles, score, spawnTimer, lastTime;
+  const rand=(a,b)=>a+Math.random()*(b-a);
+  function resize(){
+    const r=canvas.getBoundingClientRect();
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    W=Math.max(320,r.width); H=Math.max(240,r.height);
+    canvas.width=Math.round(W*dpr); canvas.height=Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  window.addEventListener('resize',resize);
+  function reset(){
+    resize();
+    plane={x:W*.22,y:H*.5,vy:0,r:Math.max(12,H*.033),rot:0};
+    obstacles=[]; score=0; spawnTimer=0; scoreEl.textContent='0';
+    state='start'; startOverlay.classList.remove('hidden'); overOverlay.classList.add('hidden');
+    draw();
+  }
+  function start(){
+    reset();
+    state='playing'; startOverlay.classList.add('hidden'); overOverlay.classList.add('hidden');
+    lastTime=performance.now();
+    spawnTimer=0;
+    if(frameId)cancelAnimationFrame(frameId);
+    frameId=requestAnimationFrame(loop);
+  }
+  let frameId=0;
+  function flap(){
+    if(state!=='playing')return;
+    plane.vy=Math.max(-H*.021, plane.vy-H*.011);
+  }
+  function spawn(){
+    const gap=Math.max(H*.27,H*.20);
+    const margin=H*.12;
+    const center=rand(margin+gap*.55,H-margin-gap*.55);
+    const w=Math.max(46,W*.085);
+    obstacles.push({x:W+20,w,gap,center,passed:false});
+  }
+  function loop(t){
+    if(state!=='playing')return;
+    const dt=Math.min(.035,Math.max(.008,(t-lastTime)/1000)); lastTime=t;
+    plane.vy+=H*.00095*dt*60;
+    plane.y+=plane.vy*dt*60;
+    plane.rot=Math.max(-.45,Math.min(.75,plane.vy/(H*.025)));
+    spawnTimer+=dt;
+    const spawnEvery=Math.max(.78,1.45-score*.018);
+    if(spawnTimer>=spawnEvery){spawnTimer=0;spawn();}
+    const speed=W*(.34+Math.min(.16,score*.006));
+    obstacles.forEach(o=>{o.x-=speed*dt;});
+    for(const o of obstacles){
+      if(!o.passed && o.x+o.w<plane.x-plane.r){o.passed=true;score++;scoreEl.textContent=score;}
+    }
+    obstacles=obstacles.filter(o=>o.x+o.w>-30);
+    const safe=plane.r*.55;
+    for(const o of obstacles){
+      const topH=o.center-o.gap/2;
+      const botY=o.center+o.gap/2;
+      if(plane.x+plane.r>o.x && plane.x-plane.r<o.x+o.w && (plane.y-safe<topH || plane.y+safe>botY)){
+        return end();
+      }
+    }
+    if(plane.y-plane.r<0 || plane.y+plane.r>H)return end();
+    draw();
+    frameId=requestAnimationFrame(loop);
+  }
+  function end(){
+    state='over'; finalScoreEl.textContent=score; overOverlay.classList.remove('hidden');
+    draw();
+  }
+  function roundRect(x,y,w,h,r){r=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+  function draw(){
+    const sky=ctx.createLinearGradient(0,0,0,H); sky.addColorStop(0,'#8ee8ff'); sky.addColorStop(1,'#eafcff');
+    ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(255,255,255,.78)';
+    for(const [cx,cy,rx,ry] of [[.12,.17,.13,.045],[.38,.1,.1,.035],[.78,.2,.12,.04],[.62,.32,.1,.032]]){
+      ctx.beginPath();ctx.ellipse(W*cx,H*cy,W*rx,H*ry,0,0,Math.PI*2);ctx.fill();
+    }
+    ctx.fillStyle='#91e68b';ctx.beginPath();ctx.moveTo(0,H*.82);ctx.quadraticCurveTo(W*.3,H*.72,W*.55,H*.8);ctx.quadraticCurveTo(W*.8,H*.87,W,H*.76);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.fill();
+    ctx.fillStyle='#45b970';ctx.beginPath();ctx.moveTo(0,H*.9);ctx.quadraticCurveTo(W*.25,H*.82,W*.55,H*.89);ctx.quadraticCurveTo(W*.8,H*.94,W,H*.85);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.fill();
+    for(const o of obstacles){
+      const topH=o.center-o.gap/2, botY=o.center+o.gap/2;
+      const g=ctx.createLinearGradient(o.x,0,o.x+o.w,0);g.addColorStop(0,'#78d17d');g.addColorStop(.45,'#43a95e');g.addColorStop(1,'#246f3f');
+      ctx.fillStyle=g;ctx.strokeStyle='#277a4c';ctx.lineWidth=2;
+      roundRect(o.x,0,o.w,topH,o.w*.45);ctx.fill();ctx.stroke();
+      roundRect(o.x,botY,o.w,H-botY,o.w*.45);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#91e68b';ctx.beginPath();ctx.arc(o.x+o.w/2,topH,o.w*.17,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(o.x+o.w/2,botY,o.w*.17,0,Math.PI*2);ctx.fill();
+    }
+    // plane
+    ctx.save();ctx.translate(plane.x,plane.y);ctx.rotate(plane.rot);
+    const s=plane.r;
+    ctx.shadowColor='rgba(21,52,95,.22)';ctx.shadowBlur=10;ctx.shadowOffsetY=5;
+    ctx.beginPath();ctx.moveTo(-s*1.1,0);ctx.lineTo(s*1.05,-s*.85);ctx.lineTo(s*.7,s*.08);ctx.closePath();ctx.fillStyle='#ffd15a';ctx.fill();ctx.strokeStyle='#d69a1f';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(-s*1.1,0);ctx.lineTo(s*.7,s*.08);ctx.lineTo(-s*.2,s*.95);ctx.closePath();ctx.fillStyle='#f28b2b';ctx.fill();ctx.strokeStyle='#c96a14';ctx.stroke();
+    ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+    ctx.beginPath();ctx.moveTo(s*1.05,-s*.85);ctx.lineTo(s*.78,-s*.18);ctx.lineTo(s*.7,s*.08);ctx.closePath();ctx.fillStyle='#fff3cf';ctx.fill();ctx.strokeStyle='#d69a1f';ctx.stroke();
+    ctx.fillStyle='#15345f';ctx.beginPath();ctx.arc(s*.36,-s*.27,s*.07,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(s*.58,-s*.3,s*.07,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#15345f';ctx.lineWidth=2;ctx.beginPath();ctx.arc(s*.48,-s*.18,s*.16,.2,Math.PI-.2);ctx.stroke();
+    ctx.restore();
+  }
+  playBtn.addEventListener('click',start);
+  restartBtn.addEventListener('click',start);
+  canvas.addEventListener('pointerdown',e=>{e.preventDefault(); if(state==='playing')flap();});
+  window.addEventListener('keydown',e=>{
+    if(e.code==='Space'||e.key===' '){e.preventDefault();if(state==='playing')flap();else if(state==='start')start();else if(state==='over')start();}
+  },{passive:false});
+  window.addEventListener('touchstart',e=>{if(state==='playing'){e.preventDefault();flap();}},{passive:false});
+  window.addEventListener('resize',()=>{resize();if(state!=='playing')draw();});
+  reset();
+})();
+</script>
+</body>
+</html>

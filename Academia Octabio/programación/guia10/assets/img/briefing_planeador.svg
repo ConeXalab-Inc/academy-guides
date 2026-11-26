@@ -1,0 +1,220 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1050" width="900" height="1050" role="img" aria-label="Un planeador de cartón y balso sobrevuela una reserva natural con montañas y bosques; Octabio lo observa desde el prado">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fd0f7"/>
+      <stop offset="0.45" stop-color="#bfe4fb"/>
+      <stop offset="1" stop-color="#eaf7ff"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff6c9" stop-opacity="0.95"/>
+      <stop offset="0.55" stop-color="#ffe9a0" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#ffe9a0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="farMt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a9c9e6"/>
+      <stop offset="1" stop-color="#8db4d6"/>
+    </linearGradient>
+    <linearGradient id="midMt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6f9fc4"/>
+      <stop offset="1" stop-color="#54809f"/>
+    </linearGradient>
+    <linearGradient id="nearMt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4f8f7d"/>
+      <stop offset="1" stop-color="#3d7668"/>
+    </linearGradient>
+    <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9ad8f0"/>
+      <stop offset="1" stop-color="#63b6dd"/>
+    </linearGradient>
+    <linearGradient id="meadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fd472"/>
+      <stop offset="1" stop-color="#57b25a"/>
+    </linearGradient>
+    <linearGradient id="meadow2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a3dd80"/>
+      <stop offset="1" stop-color="#6cc063"/>
+    </linearGradient>
+    <linearGradient id="wing" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.5" stop-color="#f4f9fd"/>
+      <stop offset="1" stop-color="#dbe7f2"/>
+    </linearGradient>
+    <linearGradient id="balsa" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6e3ba"/>
+      <stop offset="1" stop-color="#d6b87e"/>
+    </linearGradient>
+    <linearGradient id="visor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1d3a5c"/>
+      <stop offset="1" stop-color="#0f2237"/>
+    </linearGradient>
+    <linearGradient id="robotBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dbe9f6"/>
+    </linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#15345f" flood-opacity="0.18"/>
+    </filter>
+    <filter id="glowEye" x="-120%" y="-120%" width="340%" height="340%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- cielo -->
+  <rect width="900" height="1050" fill="url(#sky)"/>
+  <circle cx="726" cy="168" r="150" fill="url(#sunGlow)"/>
+  <circle cx="726" cy="168" r="54" fill="#ffeaa8"/>
+
+  <!-- nubes -->
+  <g fill="#ffffff" opacity="0.92">
+    <g>
+      <ellipse cx="160" cy="196" rx="58" ry="30"/>
+      <ellipse cx="206" cy="182" rx="42" ry="34"/>
+      <ellipse cx="110" cy="204" rx="36" ry="22"/>
+    </g>
+    <g opacity="0.85">
+      <ellipse cx="520" cy="128" rx="48" ry="24"/>
+      <ellipse cx="556" cy="116" rx="34" ry="26"/>
+      <ellipse cx="486" cy="136" rx="28" ry="17"/>
+    </g>
+    <g opacity="0.8">
+      <ellipse cx="700" cy="352" rx="44" ry="21"/>
+      <ellipse cx="736" cy="342" rx="30" ry="23"/>
+    </g>
+  </g>
+
+  <!-- montañas lejanas -->
+  <path d="M0 566 L96 452 L172 502 L268 392 L372 486 L470 404 L566 500 L660 424 L748 492 L820 448 L900 512 L900 660 L0 660 Z" fill="url(#farMt)"/>
+  <g fill="#f2f8ff" opacity="0.9">
+    <path d="M268 392 L300 430 L284 436 L268 420 L250 438 L240 428 Z"/>
+    <path d="M470 404 L498 440 L484 446 L470 430 L454 448 L444 438 Z"/>
+    <path d="M660 424 L686 456 L672 462 L660 448 L646 462 L636 452 Z"/>
+  </g>
+
+  <!-- montañas medias -->
+  <path d="M0 636 L110 540 L206 600 L300 512 L404 606 L512 528 L610 610 L700 552 L790 614 L900 560 L900 700 L0 700 Z" fill="url(#midMt)"/>
+  <path d="M0 668 L140 606 L260 660 L380 600 L500 664 L620 606 L740 662 L860 612 L900 640 L900 720 L0 720 Z" fill="url(#nearMt)" opacity="0.95"/>
+
+  <!-- bosque -->
+  <g fill="#2f8f5b">
+    <path d="M0 706 L900 706 L900 690 L860 700 L820 682 L780 700 L740 686 L700 702 L660 684 L620 700 L580 682 L540 700 L500 686 L460 702 L420 684 L380 700 L340 682 L300 700 L260 686 L220 702 L180 684 L140 700 L100 686 L60 702 L20 690 L0 700 Z"/>
+  </g>
+  <g fill="#247a4d">
+    <path d="M0 724 L40 704 L80 722 L120 702 L160 722 L200 704 L240 724 L280 704 L320 722 L360 702 L400 724 L440 704 L480 722 L520 702 L560 724 L600 704 L640 722 L680 702 L720 724 L760 704 L800 722 L840 702 L880 722 L900 710 L900 736 L0 736 Z"/>
+  </g>
+
+  <!-- lago -->
+  <ellipse cx="470" cy="742" rx="430" ry="34" fill="url(#lake)"/>
+  <g fill="#ffffff" opacity="0.55">
+    <rect x="300" y="736" width="120" height="4" rx="2"/>
+    <rect x="470" y="748" width="150" height="4" rx="2"/>
+    <rect x="620" y="738" width="90" height="4" rx="2"/>
+  </g>
+
+  <!-- pradera -->
+  <path d="M0 762 C160 742 300 760 460 754 C620 748 760 762 900 746 L900 1050 L0 1050 Z" fill="url(#meadow)"/>
+  <path d="M0 862 C180 830 320 866 470 852 C640 836 780 862 900 840 L900 1050 L0 1050 Z" fill="url(#meadow2)" opacity="0.85"/>
+
+  <!-- arbustos y flores -->
+  <g>
+    <ellipse cx="640" cy="800" rx="54" ry="22" fill="#3f9c5d"/>
+    <ellipse cx="676" cy="790" rx="34" ry="18" fill="#4fb06a"/>
+    <ellipse cx="120" cy="826" rx="46" ry="18" fill="#3f9c5d"/>
+    <ellipse cx="152" cy="818" rx="28" ry="15" fill="#4fb06a"/>
+    <ellipse cx="810" cy="880" rx="60" ry="24" fill="#3f9c5d" opacity="0.9"/>
+  </g>
+  <g fill="#ffffff" opacity="0.85">
+    <circle cx="330" cy="900" r="3.2"/><circle cx="352" cy="912" r="2.6"/>
+    <circle cx="520" cy="930" r="3"/><circle cx="544" cy="918" r="2.4"/>
+    <circle cx="700" cy="960" r="3"/><circle cx="726" cy="972" r="2.5"/>
+    <circle cx="250" cy="980" r="2.8"/>
+  </g>
+
+  <!-- pájaros lejanos -->
+  <g stroke="#4a7a9e" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.55">
+    <path d="M604 236 q10 -9 20 0 q10 -9 20 0"/>
+    <path d="M654 262 q7 -6 14 0 q7 -6 14 0"/>
+  </g>
+
+  <!-- pinos del prado -->
+  <g>
+    <g transform="translate(806 742)">
+      <rect x="-6" y="96" width="12" height="34" rx="4" fill="#8a6b46"/>
+      <path d="M0 -6 L52 96 L-52 96 Z" fill="#2f8f5b"/>
+      <path d="M0 32 L44 118 L-44 118 Z" fill="#2f8f5b"/>
+      <path d="M0 -6 L30 58 L-30 58 Z" fill="#3aa76a" opacity="0.85"/>
+    </g>
+    <g transform="translate(78 772) scale(0.78)">
+      <rect x="-6" y="96" width="12" height="34" rx="4" fill="#8a6b46"/>
+      <path d="M0 -6 L52 96 L-52 96 Z" fill="#2f8f5b"/>
+      <path d="M0 32 L44 118 L-44 118 Z" fill="#2f8f5b"/>
+      <path d="M0 -6 L30 58 L-30 58 Z" fill="#3aa76a" opacity="0.85"/>
+    </g>
+  </g>
+
+  <!-- planeador -->
+  <g transform="translate(520 272) rotate(-14) scale(0.9 0.58)" filter="url(#soft)">
+    <!-- ala -->
+    <path d="M28 -168 L2 0 L28 168 L76 168 L98 0 L76 -168 Z" fill="url(#wing)" stroke="#c2d4e4" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M28 -168 L76 -168 L81 -142 L34 -142 Z" fill="#3f86d8"/>
+    <path d="M28 168 L76 168 L81 142 L34 142 Z" fill="#3f86d8"/>
+    <g stroke="#d3dfeb" stroke-width="2" opacity="0.9">
+      <path d="M17 -96 L87 -96"/><path d="M11 -34 L93 -34"/><path d="M11 34 L93 34"/><path d="M17 96 L87 96"/>
+    </g>
+    <!-- estabilizador de cola -->
+    <path d="M-178 -56 L-116 -46 L-116 46 L-178 56 Z" fill="url(#wing)" stroke="#c2d4e4" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M-178 -56 L-150 -50 L-150 -40 L-178 -46 Z" fill="#3f86d8"/>
+    <path d="M-178 46 L-150 40 L-150 50 L-178 56 Z" fill="#3f86d8"/>
+    <!-- fuselaje -->
+    <path d="M-184 -9 L104 -21 C138 -20 160 -9 170 0 C160 9 138 20 104 21 L-184 9 Z" fill="url(#balsa)" stroke="#c9ab74" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M-176 3 L104 14 L104 18 L-176 7 Z" fill="#c2a069" opacity="0.5"/>
+    <!-- morro -->
+    <path d="M104 -21 C138 -20 160 -9 170 0 C160 9 138 20 104 21 Z" fill="#f28b2b"/>
+    <circle cx="86" cy="-2" r="4.5" fill="#b98f52" opacity="0.75"/>
+    <!-- gancho -->
+    <path d="M-52 12 L-44 24 L-36 12" fill="none" stroke="#8f7647" stroke-width="3.4" stroke-linecap="round"/>
+  </g>
+  <!-- estela -->
+  <path d="M150 476 C232 436 302 384 362 318" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 20" opacity="0.7"/>
+
+  <!-- Octabio -->
+  <g transform="translate(150 666)">
+    <!-- sombra -->
+    <ellipse cx="86" cy="246" rx="86" ry="16" fill="#2f7a4a" opacity="0.28"/>
+    <!-- piernas -->
+    <rect x="58" y="196" width="24" height="46" rx="12" fill="#e9f2fb" stroke="#c4d8ea" stroke-width="2"/>
+    <rect x="92" y="196" width="24" height="46" rx="12" fill="#e9f2fb" stroke="#c4d8ea" stroke-width="2"/>
+    <rect x="52" y="228" width="34" height="18" rx="9" fill="#3f86d8"/>
+    <rect x="88" y="228" width="34" height="18" rx="9" fill="#3f86d8"/>
+    <!-- brazo izquierdo (abajo) -->
+    <path d="M46 120 C22 132 18 164 26 188" fill="none" stroke="#dfeaf6" stroke-width="16" stroke-linecap="round"/>
+    <circle cx="26" cy="192" r="11" fill="#f2f6fb" stroke="#c4d8ea" stroke-width="2"/>
+    <!-- cuerpo -->
+    <rect x="34" y="104" width="106" height="104" rx="34" fill="url(#robotBody)" stroke="#c4d8ea" stroke-width="2.5"/>
+    <circle cx="87" cy="152" r="17" fill="#3f86d8" opacity="0.22"/>
+    <circle cx="87" cy="152" r="10" fill="#4c9bf0"/>
+    <!-- brazo derecho (saluda) -->
+    <path d="M130 122 C158 106 174 82 176 58" fill="none" stroke="#dfeaf6" stroke-width="16" stroke-linecap="round"/>
+    <circle cx="177" cy="52" r="7" fill="#3f86d8"/>
+    <circle cx="180" cy="42" r="12" fill="#f2f6fb" stroke="#c4d8ea" stroke-width="2"/>
+    <!-- cuello -->
+    <rect x="74" y="92" width="26" height="18" rx="8" fill="#cfe0f0"/>
+    <!-- cabeza -->
+    <g>
+      <rect x="36" y="24" width="102" height="76" rx="28" fill="url(#robotBody)" stroke="#c4d8ea" stroke-width="2.5"/>
+      <rect x="48" y="40" width="78" height="42" rx="18" fill="url(#visor)"/>
+      <g filter="url(#glowEye)">
+        <path d="M64 58 q9 -12 18 0" fill="none" stroke="#66d9ff" stroke-width="6" stroke-linecap="round"/>
+        <path d="M92 58 q9 -12 18 0" fill="none" stroke="#66d9ff" stroke-width="6" stroke-linecap="round"/>
+      </g>
+      <!-- auriculares -->
+      <rect x="26" y="44" width="16" height="30" rx="8" fill="#3f86d8"/>
+      <rect x="132" y="44" width="16" height="30" rx="8" fill="#3f86d8"/>
+      <!-- casco -->
+      <path d="M30 34 C30 2 144 2 144 34 Z" fill="#ffffff" stroke="#c4d8ea" stroke-width="2.5"/>
+      <rect x="20" y="30" width="134" height="12" rx="6" fill="#eef5fc" stroke="#c4d8ea" stroke-width="2"/>
+      <path d="M84 6 L84 -12" stroke="#c4d8ea" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="84" cy="-16" r="7" fill="#f28b2b"/>
+    </g>
+  </g>
+</svg>

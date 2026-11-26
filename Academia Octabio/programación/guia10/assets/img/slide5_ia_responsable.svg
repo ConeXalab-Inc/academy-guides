@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="1600" height="1200" role="img" aria-label="Ilustración conceptual sobre el uso responsable de la IA: privacidad, originalidad, verificación y decisiones humanas">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9f7ff"/><stop offset=".55" stop-color="#f4f0ff"/><stop offset="1" stop-color="#fff4e8"/></linearGradient>
+    <radialGradient id="halo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="shield" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a7bff"/><stop offset="1" stop-color="#5b3bc0"/></linearGradient>
+    <linearGradient id="palette" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd15a"/><stop offset="1" stop-color="#f28b2b"/></linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ce8ff"/><stop offset="1" stop-color="#2d9ed8"/></linearGradient>
+    <linearGradient id="hand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd6b5"/><stop offset="1" stop-color="#f0a879"/></linearGradient>
+    <linearGradient id="bulb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff8c9"/><stop offset="1" stop-color="#ffd15a"/></linearGradient>
+    <linearGradient id="scale" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#59d4b2"/><stop offset="1" stop-color="#1f9e7b"/></linearGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#2c225c" flood-opacity=".18"/></filter>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="18" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+
+  <rect width="1600" height="1200" fill="url(#bg)"/>
+  <circle cx="800" cy="570" r="460" fill="url(#halo)"/>
+  <g fill="none" stroke="#c9bdf5" stroke-width="3" opacity=".55">
+    <circle cx="800" cy="570" r="380"/><circle cx="800" cy="570" r="290" stroke-dasharray="5 14"/>
+    <path d="M420 330 C560 380 660 430 740 500" stroke-dasharray="4 16"/>
+    <path d="M1180 330 C1040 380 940 430 860 500" stroke-dasharray="4 16"/>
+    <path d="M430 870 C570 815 670 760 740 690" stroke-dasharray="4 16"/>
+    <path d="M1170 870 C1030 815 930 760 860 690" stroke-dasharray="4 16"/>
+  </g>
+  <g fill="#ffd15a"><path d="M790 118 l7 18 19 2 -15 12 4 20 -18 -10 -18 10 4 -20 -15 -12 19 -2Z"/><path d="M1218 596 l4 10 11 1 -9 7 3 11 -10 -6 -10 6 3 -11 -9 -7 11 -1Z"/><path d="M360 584 l4 10 11 1 -9 7 3 11 -10 -6 -10 6 3 -11 -9 -7 11 -1Z"/></g>
+
+  <!-- Privacy -->
+  <g filter="url(#shadow)" transform="translate(340 310)">
+    <circle cx="0" cy="0" r="132" fill="#ffffff" opacity=".92"/>
+    <path d="M0 -88 L78 -52 V24 C78 68 42 100 0 114 C-42 100 -78 68 -78 24 V-52Z" fill="url(#shield)" stroke="#4d2eaa" stroke-width="5"/>
+    <rect x="-28" y="-14" width="56" height="48" rx="12" fill="#ffd15a" stroke="#ba821b" stroke-width="4"/>
+    <path d="M-15 -14 V-29 A15 15 0 1 1 15 -29 V-14" fill="none" stroke="#ffd15a" stroke-width="9"/>
+    <circle cx="0" cy="8" r="6" fill="#5b3bc0"/><path d="M0 14 V27" stroke="#5b3bc0" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Originality -->
+  <g filter="url(#shadow)" transform="translate(1260 310)">
+    <circle cx="0" cy="0" r="132" fill="#ffffff" opacity=".92"/>
+    <path d="M-42 -66 C24 -92 90 -46 82 14 C76 52 40 58 24 38 C8 18 -12 36 -37 23 C-70 6 -76 -44 -42 -66Z" fill="url(#palette)" stroke="#b76816" stroke-width="5"/>
+    <circle cx="-27" cy="-32" r="13" fill="#d94a4a"/><circle cx="12" cy="-49" r="12" fill="#285aa6"/><circle cx="43" cy="-20" r="12" fill="#2f9c71"/><circle cx="-6" cy="-4" r="10" fill="#8253c9"/>
+    <g transform="translate(48 -6) rotate(35)"><rect x="-8" y="-90" width="16" height="82" rx="8" fill="#b97742"/><path d="M-10 8 Q0 30 10 8 L4 -8 H-4Z" fill="#15345f"/><path d="M-8 -8 H8" stroke="#ffd15a" stroke-width="5"/></g>
+    <path d="M-54 55 l5 12 13 1 -10 9 3 13 -11 -6 -11 6 3 -13 -10 -9 13 -1Z" fill="#fff8cf" stroke="#d39a23" stroke-width="2"/>
+  </g>
+
+  <!-- Verification -->
+  <g filter="url(#shadow)" transform="translate(350 900)">
+    <circle cx="0" cy="0" r="132" fill="#ffffff" opacity=".92"/>
+    <rect x="-65" y="-78" width="104" height="132" rx="16" fill="#fffdf7" stroke="#b8c5d8" stroke-width="4"/>
+    <g stroke="#7d9cc0" stroke-width="6" stroke-linecap="round"><path d="M-42 -42 H10"/><path d="M-42 -20 H-2"/><path d="M-42 2 H14"/><path d="M-42 24 H-8"/></g>
+    <g fill="#3ccf91"><circle cx="-26" cy="48" r="8"/><path d="M-31 48 l4 5 7 -10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <circle cx="52" cy="34" r="58" fill="none" stroke="#15345f" stroke-width="16" opacity=".92"/>
+    <circle cx="52" cy="34" r="43" fill="#dff7ff" opacity=".55"/>
+    <path d="M52 6 l7 16 18 2 -14 11 4 18 -15 -9 -15 9 4 -18 -14 -11 18 -2Z" fill="#2d9ed8" opacity=".9"/>
+    <path d="M92 73 L128 110" stroke="#15345f" stroke-width="18" stroke-linecap="round"/>
+  </g>
+
+  <!-- Human decision -->
+  <g filter="url(#shadow)" transform="translate(1250 900)">
+    <circle cx="0" cy="0" r="132" fill="#ffffff" opacity=".92"/>
+    <path d="M0 -77 V-44" stroke="#1a8268" stroke-width="10" stroke-linecap="round"/><circle cx="0" cy="-85" r="12" fill="#ffd15a" stroke="#c88d20" stroke-width="3"/>
+    <path d="M-88 -42 H88" stroke="#1a8268" stroke-width="12" stroke-linecap="round"/>
+    <path d="M-88 -42 L-58 22 H-118 Z" fill="#bfeee2" stroke="#1a8268" stroke-width="5"/>
+    <path d="M88 -42 L58 22 H118 Z" fill="#bfeee2" stroke="#1a8268" stroke-width="5"/>
+    <path d="M-58 22 Q-34 48 0 48 Q34 48 58 22" fill="none" stroke="#1a8268" stroke-width="7"/>
+    <path d="M0 48 V82" stroke="#1a8268" stroke-width="10" stroke-linecap="round"/>
+    <path d="M-38 90 H38" stroke="#1a8268" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="0" cy="-42" r="19" fill="url(#scale)" stroke="#127159" stroke-width="4"/>
+    <path d="M-7 -42 l6 7 10 -14" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Central idea and human hand -->
+  <g filter="url(#shadow)">
+    <circle cx="800" cy="540" r="160" fill="#ffffff" opacity=".76"/>
+    <circle cx="800" cy="540" r="132" fill="#f4edff" stroke="#c9b8e8" stroke-width="4"/>
+    <g filter="url(#glow)">
+      <circle cx="800" cy="458" r="84" fill="#fff8c9" opacity=".55"/>
+      <path d="M800 380 C746 380 706 424 706 478 C706 520 732 545 754 574 C764 588 770 604 770 620 H830 C830 604 836 588 846 574 C868 545 894 520 894 478 C894 424 854 380 800 380Z" fill="url(#bulb)" stroke="#d69a1f" stroke-width="6"/>
+      <path d="M770 620 H830 M778 644 H822" stroke="#d69a1f" stroke-width="10" stroke-linecap="round"/>
+      <path d="M770 470 Q800 500 830 470" fill="none" stroke="#d69a1f" stroke-width="5" stroke-linecap="round" opacity=".65"/>
+    </g>
+    <path d="M620 786 C674 742 720 728 760 728 H840 C880 728 926 742 980 786 C1000 802 1008 824 998 844 L970 900 H630 L602 844 C592 824 600 802 620 786Z" fill="#6b4fa0" stroke="#4b327c" stroke-width="7"/>
+    <path d="M690 762 C680 704 696 684 726 684 C746 684 760 700 764 762 M750 762 C744 696 760 674 790 674 C814 674 826 694 828 762 M816 762 C816 700 834 684 858 684 C882 684 896 704 896 762" fill="url(#hand)" stroke="#b56c4e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M620 786 C668 752 720 744 760 744 H840 C880 744 932 752 980 786" fill="none" stroke="#8a70bd" stroke-width="5" opacity=".6"/>
+  </g>
+
+  <!-- small confetti / responsibility motif -->
+  <g fill="#8253c9" opacity=".55"><circle cx="640" cy="220" r="7"/><circle cx="980" cy="210" r="5"/><circle cx="530" cy="690" r="6"/><circle cx="1080" cy="680" r="7"/><circle cx="800" cy="1040" r="5"/></g>
+  <g fill="#28a66a" opacity=".6"><path d="M1120 760 l4 9 10 1 -8 6 2 10 -8 -5 -8 5 2 -10 -8 -6 10 -1Z"/><path d="M480 760 l4 9 10 1 -8 6 2 10 -8 -5 -8 5 2 -10 -8 -6 10 -1Z"/></g>
+</svg>

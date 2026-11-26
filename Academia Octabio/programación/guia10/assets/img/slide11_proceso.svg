@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="1600" height="1200" role="img" aria-label="Ilustración conceptual del proceso: una instrucción escrita en una interfaz pasa por la inteligencia artificial y se transforma en un videojuego de vuelo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8f7ff"/><stop offset=".55" stop-color="#f2edff"/><stop offset="1" stop-color="#fff4e7"/></linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f4f0ff"/></linearGradient>
+    <linearGradient id="bubble" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dff4ff"/><stop offset="1" stop-color="#cce7ff"/></linearGradient>
+    <linearGradient id="bubble2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2e9ff"/><stop offset="1" stop-color="#e1d2ff"/></linearGradient>
+    <radialGradient id="ai" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#b7a4ff"/><stop offset="1" stop-color="#5c3cc4"/></radialGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fe7ff"/><stop offset="1" stop-color="#dff8ff"/></linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#91e68b"/><stop offset="1" stop-color="#45b970"/></linearGradient>
+    <linearGradient id="column" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#78d17d"/><stop offset=".5" stop-color="#43a95e"/><stop offset="1" stop-color="#2a7b45"/></linearGradient>
+    <linearGradient id="plane" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe28b"/><stop offset="1" stop-color="#f0a126"/></linearGradient>
+    <linearGradient id="arrow" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffd15a"/><stop offset="1" stop-color="#f28b2b"/></linearGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="24" stdDeviation="24" flood-color="#2a235f" flood-opacity=".18"/></filter>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="15" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1600" height="1200" fill="url(#bg)"/>
+  <g fill="#ffffff" opacity=".36"><circle cx="120" cy="170" r="5"/><circle cx="260" cy="110" r="3"/><circle cx="710" cy="160" r="4"/><circle cx="1030" cy="120" r="3"/><circle cx="1420" cy="190" r="5"/><circle cx="1500" cy="980" r="4"/><circle cx="280" cy="1050" r="3"/></g>
+
+  <!-- Instruction interface -->
+  <g filter="url(#shadow)">
+    <rect x="80" y="250" width="470" height="670" rx="38" fill="url(#panel)" stroke="#d8cff0" stroke-width="4"/>
+    <rect x="115" y="285" width="400" height="54" rx="27" fill="#f0eaff"/>
+    <g fill="#8253c9"><circle cx="145" cy="312" r="7"/><circle cx="168" cy="312" r="7"/><circle cx="191" cy="312" r="7"/></g>
+    <rect x="125" y="370" width="292" height="112" rx="26" fill="url(#bubble)"/>
+    <!-- mini plane icon -->
+    <g transform="translate(165 425) rotate(-12)"><path d="M0 22 L72 0 L58 27Z" fill="#ffd15a" stroke="#d69a1f" stroke-width="3"/><path d="M0 22 L58 27 L39 52Z" fill="#f28b2b" stroke="#c96a14" stroke-width="3"/><path d="M72 0 L65 20 L58 27Z" fill="#fff3cf" stroke="#d69a1f" stroke-width="2"/></g>
+    <rect x="245" y="397" width="150" height="86" rx="18" fill="#ffffff" opacity=".7"/>
+    <g stroke="#6b4fa0" stroke-width="5" stroke-linecap="round" opacity=".65"><path d="M272 421 H370"/><path d="M272 442 H348"/><path d="M272 463 H326"/></g>
+    <rect x="180" y="510" width="320" height="132" rx="26" fill="url(#bubble2)"/>
+    <g transform="translate(210 545)">
+      <g fill="#3c9a63" stroke="#277a4c" stroke-width="2"><rect x="0" y="0" width="17" height="43" rx="8"/><rect x="0" y="62" width="17" height="43" rx="8"/><rect x="42" y="-8" width="17" height="46" rx="8"/><rect x="42" y="64" width="17" height="35" rx="8"/></g>
+      <path d="M88 47 l5 11 12 1 -9 8 3 12 -11 -6 -11 6 3 -12 -9 -8 12 -1Z" fill="#ffd15a" stroke="#d6a01f" stroke-width="2"/>
+      <g stroke="#6b4fa0" stroke-width="5" stroke-linecap="round" opacity=".65"><path d="M126 30 H276"/><path d="M126 51 H244"/><path d="M126 72 H262"/><path d="M126 93 H214"/></g>
+    </g>
+    <rect x="125" y="690" width="380" height="94" rx="24" fill="#ffffff" stroke="#d8cff0" stroke-width="3"/>
+    <g stroke="#9b8db8" stroke-width="5" stroke-linecap="round" opacity=".65"><path d="M150 720 H370"/><path d="M150 745 H300"/></g>
+    <path d="M150 762 V776" stroke="#8253c9" stroke-width="5" stroke-linecap="round"/>
+    <!-- hand / pencil writing conceptually -->
+    <g transform="translate(382 720) rotate(-27)">
+      <rect x="0" y="0" width="16" height="85" rx="8" fill="#ffd15a" stroke="#d29a21" stroke-width="3"/>
+      <path d="M0 85 L8 110 L16 85Z" fill="#f28b2b" stroke="#c96a14" stroke-width="3"/>
+      <path d="M-18 4 C-35 -2 -38 15 -27 26 C-17 36 -3 33 1 22" fill="#ffd3b0" stroke="#b86f4b" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    <path d="M120 824 H510" stroke="#e2d9f4" stroke-width="3"/>
+  </g>
+
+  <!-- AI processing symbol -->
+  <g filter="url(#glow)">
+    <circle cx="820" cy="575" r="150" fill="#ffffff" opacity=".7"/>
+    <circle cx="820" cy="575" r="125" fill="url(#ai)" stroke="#4d2eaa" stroke-width="5"/>
+    <g fill="#ffffff" opacity=".8"><circle cx="820" cy="465" r="7"/><circle cx="918" cy="527" r="6"/><circle cx="918" cy="628" r="5"/><circle cx="820" cy="685" r="6"/><circle cx="722" cy="628" r="5"/><circle cx="722" cy="527" r="7"/></g>
+    <g stroke="#dcd0ff" stroke-width="3" opacity=".75"><path d="M820 465 L918 527 L918 628 L820 685 L722 628 L722 527 Z"/><path d="M820 465 V685 M722 527 L918 628 M918 527 L722 628"/></g>
+    <path d="M820 540 l9 20 22 2 -17 14 5 23 -19 -11 -19 11 5 -23 -17 -14 22 -2Z" fill="#fff6bf" stroke="#d59a1c" stroke-width="3"/>
+  </g>
+  <g fill="none" stroke="url(#arrow)" stroke-width="12" stroke-linecap="round" stroke-dasharray="2 24">
+    <path d="M545 660 C630 660 690 625 748 602"/>
+    <path d="M948 602 C1010 625 1070 660 1150 660"/>
+  </g>
+  <path d="M545 660 l-20 -12 v24Z" fill="#f28b2b"/><path d="M1150 660 l20 -12 v24Z" fill="#f28b2b"/>
+
+  <!-- Result game screen -->
+  <g filter="url(#shadow)">
+    <rect x="1060" y="240" width="480" height="700" rx="38" fill="#ffffff" stroke="#d8cff0" stroke-width="4"/>
+    <rect x="1088" y="268" width="424" height="588" rx="24" fill="url(#sky)"/>
+    <circle cx="1450" cy="330" r="42" fill="#ffd15a" opacity=".8"/>
+    <g fill="#ffffff" opacity=".8"><ellipse cx="1180" cy="356" rx="55" ry="18"/><ellipse cx="1220" cy="344" rx="30" ry="12"/></g>
+    <path d="M1088 710 C1190 684 1260 702 1350 690 C1430 678 1480 692 1512 684 L1512 856 L1088 856Z" fill="url(#grass)"/>
+    <!-- columns -->
+    <g fill="url(#column)" stroke="#277a4c" stroke-width="3">
+      <rect x="1320" y="268" width="55" height="170" rx="27"/><rect x="1320" y="560" width="55" height="296" rx="27"/>
+      <rect x="1440" y="268" width="55" height="145" rx="27"/><rect x="1440" y="595" width="55" height="261" rx="27"/>
+    </g>
+    <g fill="#91e68b"><circle cx="1327" cy="428" r="12"/><circle cx="1368" cy="430" r="8"/><circle cx="1327" cy="560" r="12"/><circle cx="1368" cy="562" r="8"/><circle cx="1447" cy="403" r="11"/><circle cx="1488" cy="405" r="8"/><circle cx="1447" cy="595" r="11"/><circle cx="1488" cy="597" r="8"/></g>
+    <!-- paper plane -->
+    <g transform="translate(1135 540) rotate(-8)"><path d="M0 55 L108 0 L84 65Z" fill="#ffd15a" stroke="#d69a1f" stroke-width="6"/><path d="M0 55 L84 65 L42 105Z" fill="#f28b2b" stroke="#c96a14" stroke-width="6"/><path d="M108 0 L96 42 L84 65Z" fill="#fff3cf" stroke="#d69a1f" stroke-width="4"/><circle cx="53" cy="62" r="5" fill="#15345f"/><circle cx="73" cy="57" r="5" fill="#15345f"/><path d="M48 77 Q61 85 74 76" fill="none" stroke="#15345f" stroke-width="4" stroke-linecap="round"/></g>
+    <path d="M1150 530 Q1200 490 1250 505" fill="none" stroke="#ffffff" stroke-width="5" stroke-dasharray="7 8" opacity=".8"/>
+    <!-- HUD: points and restart -->
+    <rect x="1110" y="290" width="135" height="38" rx="19" fill="#15345f" opacity=".9"/>
+    <path d="M1130 309 l4 9 10 1 -8 7 2 9 -8 -5 -8 5 2 -9 -8 -7 10 -1Z" fill="#ffd15a"/>
+    <text x="1150" y="316" fill="#ffffff" font-family="inherit" font-size="16" font-weight="900">12</text>
+    <rect x="1380" y="290" width="118" height="38" rx="19" fill="#15345f" opacity=".9"/>
+    <path d="M1410 302 a13 13 0 1 1 -10 5" fill="none" stroke="#ffd15a" stroke-width="4" stroke-linecap="round"/><path d="M1400 300 l4 9 -10 1Z" fill="#ffd15a"/>
+  </g>
+
+  <!-- small connective sparkles -->
+  <g fill="#ffd15a"><path d="M760 330 l5 12 13 1 -10 8 3 13 -11 -6 -11 6 3 -13 -10 -8 13 -1Z"/><path d="M990 915 l4 9 10 1 -8 6 2 10 -8 -5 -8 5 2 -10 -8 -6 10 -1Z"/></g>
+</svg>
