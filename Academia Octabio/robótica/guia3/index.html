@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MAMUS · Guía 3 · Robótica</title>
+  <meta name="description" content="Guía digital horizontal 16:9: proyecto Octabio Alumbrado, control de luz con fotocelda, y la misión de las gallinas con Octabio." />
+  <style>
+    :root{
+      --navy:#15345f;--blue:#285aa6;--sky:#eaf5ff;--orange:#f28b2b;--yellow:#ffd15a;
+      --green:#28a66a;--red:#d94a4a;--purple:#8253c9;--ink:#18304c;--paper:#ffffff;--cream:#fff6e8;
+      --line:#d9e5f0;--shadow:0 18px 55px rgba(17,45,80,.18)
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-snap-type:y mandatory;background:#dbe8f4}
+    body{margin:0;font-family:Inter,ui-rounded,"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink);background:linear-gradient(180deg,#dbe8f4,#f6fbff);overflow-x:hidden}
+    button,input,textarea,select{font:inherit}button{cursor:pointer}
+    #deck{--zoom:1}
+    .slide{min-height:100vh;padding:12px;scroll-snap-align:start;scroll-snap-stop:always;display:flex;justify-content:center;align-items:center;overflow:auto;position:relative}
+    html.zoomed{scroll-snap-type:none}
+    .canvas{position:relative;overflow:hidden;flex:none;background:var(--paper);box-shadow:var(--shadow);border-radius:2.4cqw;container-type:inline-size;margin:auto;
+      --fs-title:3.45cqw;--fs-sub:1.55cqw;--fs-body:1.3cqw;--fs-note:.85cqw;font-size:var(--fs-body);
+      width:calc(min(100vw - 24px,(100vh - 24px) * 1.77778) * var(--zoom,1));height:calc(min(100vh - 24px,(100vw - 24px) * .5625) * var(--zoom,1));
+      min-width:calc(520px * var(--zoom,1));min-height:calc(292px * var(--zoom,1));aspect-ratio:16/9}
+    .content{height:100%;padding:4.2cqw 4.8cqw 7.6cqw;display:grid;align-content:safe center;gap:1.6cqw;overflow:auto;scrollbar-width:thin}
+    .content.compact{padding-top:3.2cqw;padding-bottom:7.2cqw}
+    .content.tight{padding-top:2.9cqw;padding-bottom:7.2cqw;gap:.7cqw}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:2.6cqw;align-items:center}.two-col.wide-left{grid-template-columns:1.18fr .82fr}.two-col.wide-right{grid-template-columns:.86fr 1.14fr}
+    .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4cqw}.four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4cqw}
+    h1,h2,h3,p{margin:0}h1,h2{font-size:var(--fs-title);line-height:1;letter-spacing:-.035em}h1{line-height:.95}h3{font-size:var(--fs-sub);line-height:1.15}
+    p,li{font-size:var(--fs-sub)}label,button,input,textarea,select{font-size:var(--fs-body)}p{line-height:1.42;color:var(--ink)}
+    .card p,.card li,.lab-card p,.lab-card li,.pista-box p,.challenge-note p,.sensor-card p,.io-box p,.quiz-panel p,.feedback-box,.key-q,.sensores-list li,.step span,.steps-compact span,.mini-card,.decision-node,.sensor-out span,.sensor-val,.coord-val,.color-row,.coords-row span,.quick-check p,.quick-check .feedback,.quick-check .key-q,.quick-check .btn{font-size:var(--fs-body)}.lead{font-size:var(--fs-sub);line-height:1.42;color:var(--ink)}
+    .eyebrow{display:inline-flex;width:max-content;align-items:center;gap:.55cqw;padding:.55cqw 1cqw;border-radius:999px;background:var(--blue);color:#fff;font-weight:900;letter-spacing:.025em}
+    .eyebrow.orange{background:var(--orange)}.eyebrow.green{background:var(--green)}.highlight{color:var(--orange)}
+    .slide-eyebrow{position:absolute;inset:2.2cqw 2.2cqw auto auto;z-index:30}
+    .card-gif{display:block;max-height:14.3cqw;width:auto;margin-inline:auto;border-radius:.8cqw;justify-self:center}
+    .card{background:var(--cream);border:2px solid #f2d7b2;border-radius:1.5cqw;padding:1.45cqw;box-shadow:0 .7cqw 1.5cqw rgba(66,47,20,.07);display:grid;gap:.4cqw;align-content:start}
+    .card.blue{background:var(--sky);border-color:#c6dff4}.card.white{background:#fff;border-color:var(--line)}.card.dark{background:var(--navy);border-color:var(--navy);color:#fff}.card.orange{background:#ffe8cc;border-color:#f2a541}
+    .card.dark p{color:#eaf3ff}
+    .pill-row{display:flex;gap:.8cqw;flex-wrap:wrap}.pill{padding:.65cqw 1cqw;border-radius:999px;background:#edf4fb;color:var(--navy);font-weight:850;border:1px solid #d8e7f4}.resource-row{display:flex;gap:1.1cqw;align-items:center;flex-wrap:wrap}.resource{display:grid;gap:.45cqw;justify-items:center;text-align:center}.resource img{width:6.5cqw;height:6.5cqw;object-fit:contain;border-radius:.7cqw;background:#fff;border:2px solid var(--line);box-shadow:0 .3cqw .6cqw rgba(21,52,95,.1)}.resource span{font-size:var(--fs-note);font-weight:850;color:var(--navy)}.resource-var{display:flex;align-items:center;gap:.5cqw;margin-top:.7cqw}.setup-row{display:grid;grid-template-columns:1fr auto;gap:1cqw;align-items:center}.setup-row img{width:14cqw;height:auto;border-radius:.8cqw;border:2px solid var(--line);background:#fff;box-shadow:0 .3cqw .6cqw rgba(21,52,95,.1)}.setup-scene{display:block;width:100%;max-height:12cqw;object-fit:cover;border-radius:.8cqw;border:2px solid var(--line);box-shadow:0 .3cqw .6cqw rgba(21,52,95,.1)}.setup-gif{width:100%;height:auto;border-radius:1cqw;border:2px solid var(--line);background:#fff;box-shadow:0 .3cqw .6cqw rgba(21,52,95,.1)}
+    .challenge-note,.pista-box{display:flex;align-items:center;gap:.9cqw;padding:.85cqw 1.15cqw;border-radius:1.15cqw;box-shadow:0 .6cqw 1.2cqw rgba(21,52,95,.06)}
+    .challenge-note{background:var(--cream);border:2px solid #f2d7b2}.pista-box{background:var(--sky);border:2px solid #c6dff4}
+    .note-icon{flex:none;width:2.6cqw;height:2.6cqw;border-radius:.9cqw;display:grid;place-items:center;background:var(--orange);color:#fff;font-size:1.5cqw;font-weight:900}.pista-box .note-icon{background:var(--blue)}
+    .key-q{display:flex;gap:.5cqw;align-items:baseline;font-size:var(--fs-body);line-height:1.35;color:var(--ink);padding:.5cqw .65cqw;border-radius:.7cqw;background:#eef5ff;border-left:.4cqw solid var(--blue)}
+    .key-q b{font-weight:900;color:var(--blue);flex:none}
+    .image-placeholder{min-height:20cqw;border-radius:2cqw;padding:2.2cqw;display:grid;place-items:center;text-align:center;background:linear-gradient(135deg,#2368b4,#58b4d7 55%,#ffd15a);color:#fff;border:.35cqw solid rgba(255,255,255,.65);box-shadow:inset 0 0 0 .2cqw rgba(21,52,95,.16),0 1.2cqw 2.2cqw rgba(21,52,95,.18)}
+    .image-placeholder.orange{background:linear-gradient(135deg,#f08a2a,#ffbd59 58%,#fff1c7);color:var(--navy)}.image-placeholder.green{background:linear-gradient(135deg,#1d8b65,#4ac28f 55%,#d9ffef)}
+    .image-placeholder strong{display:block;font-size:1.8cqw;margin-bottom:.8cqw}.image-placeholder span{font-size:1.06cqw;line-height:1.42;max-width:90%}
+    .image-placeholder small{display:block;margin-top:.55cqw;font-size:.85cqw;font-weight:850;opacity:.92}
+    .flow-row{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:.8cqw;align-items:stretch}.flow-arrow{display:grid;place-items:center;font-size:2.25cqw;color:var(--blue);font-weight:950}
+    .flow-card{background:#fff;border:2px solid var(--line);border-radius:1.35cqw;padding:1cqw;display:grid;gap:.55cqw;align-content:start;min-width:0}.flow-head{display:flex;align-items:center;gap:.5cqw}.flow-n{width:2cqw;height:2cqw;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;font-weight:950}.flow-n.orange{background:var(--orange)}
+    .steps{display:grid;gap:.45cqw}.step{display:grid;grid-template-columns:1.8cqw 1fr;gap:.55cqw;align-items:start;padding:.55cqw .7cqw;border-radius:.85cqw;background:#fff;border:2px solid var(--line)}.step b{width:1.8cqw;height:1.8cqw;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;font-size:.9cqw}
+    .check-list{margin:0;padding:0;list-style:none;display:grid;gap:.45cqw}.check-list li{display:flex;gap:.55cqw;align-items:flex-start;padding:.5cqw .65cqw;border-radius:.8cqw;background:#fff;border:1.5px solid var(--line)}.check-list li::before{content:'✓';color:var(--green);font-weight:950}
+    .decision-tree{display:grid;grid-template-columns:1fr auto 1fr;gap:1cqw;align-items:center}.decision-node{padding:1cqw;border-radius:1.2cqw;background:#fff;border:2px solid var(--line);text-align:center;font-weight:850}.decision-q{background:var(--sky);border-color:#bdd9f1}.decision-yes{background:#eaf9f1;border-color:#b8e2ca}.decision-no{background:#fff0f0;border-color:#f0b4b4}.decision-orange{background:var(--cream);border-color:#f2d7b2}.branch{font-size:2.4cqw;color:var(--orange);font-weight:950}
+    .scratch-block{display:inline-flex;align-items:center;gap:.4cqw;width:max-content;max-width:100%;padding:.55cqw .75cqw;border-radius:.65cqw;color:#fff;font-weight:850;box-shadow:inset 0 -3px 0 rgba(0,0,0,.14),0 .25cqw .55cqw rgba(21,52,95,.12)}
+    .scratch-block.control{background:#f28c00}.scratch-block.event{background:#e9a600}.scratch-block.motion{background:#4a9bf5}.scratch-block.looks{background:#9d63ff}.scratch-block.sensor{background:#48b4c5}.scratch-block.led{background:#c443d1}.scratch-block.screen{background:#2597d7}.scratch-block.sound{background:#d455d4}
+    .scratch-block i{font-style:normal;background:#fff;color:var(--ink);padding:.12cqw .35cqw;border-radius:.3cqw}.block-stack{display:grid;gap:.35cqw;justify-items:start}
+    .block-img{display:block;margin-inline:auto;max-height:12cqw;width:auto;border-radius:1cqw}.block-img.comp{max-height:20.2cqw}
+    .stage-caption{font-size:var(--fs-body);color:var(--ink);font-weight:400;text-align:center}
+    #s17 .sensores-list li{font-size:var(--fs-sub)}
+    #s2 .quick-check .key-q{font-size:1.1cqw}
+    #s2 .quick-check .btn.secondary{font-size:1.1cqw}
+    #s2 .quick-check .feedback{font-size:1.1cqw}
+    #s10 .swatch{width:1.87cqw;height:1.87cqw}
+    #s19 .steps{display:grid;gap:.4cqw}
+    #s19 .step{display:grid;grid-template-columns:1.8cqw 1fr;gap:.55cqw;align-items:start;padding:0;background:transparent;border:0}
+    
+
+    .sensor-palette{height:24cqw;width:auto;display:block}
+    .neo-palette{display:block;height:36.5cqw;width:auto}
+    .challenge-img{display:block;max-height:21cqw;width:auto;margin-inline:auto}
+    .challenge-caption{font-size:var(--fs-body);font-weight:400;text-align:center;color:var(--ink)}
+    .sensores-list{display:grid;gap:.5cqw;list-style:none;margin:0;padding:0}.sensores-list li{position:relative;padding-left:1.6cqw;font-size:var(--fs-body);line-height:1.4}.sensores-list li::before{content:'•';position:absolute;left:0;color:var(--blue);font-weight:900}
+    .sensor-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2cqw}
+    .sensor-card{background:#fff;border:2px solid var(--line);border-radius:1.5cqw;padding:1.1cqw 1.2cqw;display:grid;gap:.7cqw;align-content:center;min-height:28cqw;box-shadow:0 .6cqw 1.2cqw rgba(21,52,95,.06)}
+    .sensor-card p{font-size:var(--fs-body);line-height:1.45}
+    .sensor-stage{position:relative;border:2px solid #d5e5f3;border-radius:1cqw;overflow:hidden;background:#fbfdff;display:grid;place-items:center}
+    .sensor-stage canvas{display:block;width:100%;aspect-ratio:460/360;height:auto;cursor:crosshair}
+    .sensor-out{display:flex;flex-direction:column;align-items:flex-start;gap:.5cqw}
+    .sensor-out span{font-size:var(--fs-body)}
+    .sensor-val{padding:.45cqw 1cqw;border-radius:999px;font-size:var(--fs-body);font-weight:900;background:#eef5ff;color:var(--navy);border:2px solid #c6dff4}
+    .sensor-val.on{background:#e9f8f0;color:#1d7a4f;border-color:#b8e2ca}
+    .color-row{display:flex;align-items:center;gap:.8cqw;font-size:var(--fs-body);font-weight:850}
+    .swatch{width:2.6cqw;height:2.6cqw;border-radius:.7cqw;border:2px solid #bfd2e5;cursor:pointer;padding:0}.swatch.on{border:3px solid var(--navy);transform:scale(1.1);box-shadow:0 0 0 .25cqw rgba(21,52,95,.15)}
+    .coords-row{display:flex;gap:.8cqw;flex-wrap:wrap}
+    .coord-val{padding:.35cqw .75cqw;border-radius:.6cqw;background:#eef5ff;border:2px solid #c6dff4;font-size:var(--fs-body);font-weight:850}
+    .key-pad{display:flex;gap:.7cqw;justify-content:center}
+    .key-box{flex:1;max-width:5cqw;aspect-ratio:1;display:grid;place-items:center;font-size:2.4cqw;font-weight:900;color:var(--navy);background:#fff;border:2px solid #bfd2e5;border-radius:1cqw;box-shadow:0 .35cqw 0 #bfd2e5;transition:transform .08s,box-shadow .08s,background .12s}
+    .key-box.on{background:var(--blue);color:#fff;border-color:var(--blue);transform:translateY(.2cqw);box-shadow:0 .15cqw 0 var(--blue)}
+    .blocks-embed{position:relative;min-height:0;border:2px solid #d5e5f3;border-radius:1.4cqw;overflow:hidden;background:#fff}.blocks-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+    .lab-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:1.3cqw;min-height:0;align-items:stretch}.lab-card{background:#f7fbff;border:2px solid #d5e5f3;border-radius:1.5cqw;padding:1.1cqw;min-height:0;position:relative}.lab-card.white{background:#fff}
+    .control-row{display:flex;gap:.45cqw;flex-wrap:wrap}.btn{border:0;border-radius:.8cqw;padding:.65cqw .9cqw;font-weight:900;color:#fff;background:var(--blue)}.btn.green{background:var(--green)}.btn.orange{background:var(--orange)}.btn.red{background:var(--red)}.btn.gray{background:#66788c}.btn.secondary{background:#fff;color:var(--navy);border:2px solid #bfd2e5}.btn:disabled{opacity:.45;cursor:not-allowed}
+    .control-btn{border:0;border-radius:.85cqw;padding:.72cqw .75cqw;font-weight:900;color:#fff;background:var(--blue)}.control-btn.play{background:var(--green)}.control-btn.reset{background:#66788c}
+    .field{display:grid;gap:.35cqw}.field label{font-weight:850;color:var(--navy)}.field input,.field select,.field textarea{width:100%;border:2px solid var(--line);border-radius:.8cqw;padding:.65cqw .75cqw;background:#fff;color:var(--ink);outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 .22cqw rgba(40,90,166,.12)}
+    .feedback{padding:.65cqw .8cqw;border-radius:.85cqw;background:#edf3f8;font-weight:750;min-height:2.8cqw}.feedback.ok{background:#e9f8f0;color:#146b49}.feedback.bad{background:#fff0f0;color:#922c2c}
+    .quick-check .feedback{font-size:var(--fs-body);font-weight:400;min-height:0;line-height:1.35}
+    .quick-check .btn.secondary{font-size:var(--fs-body);font-weight:600;padding:.5cqw .7cqw}
+    .quick-check .key-q{padding:.4cqw .55cqw;font-size:var(--fs-body);font-weight:600;gap:.35cqw}
+    .quick-check .card-img{display:block;width:16cqw;height:16cqw;object-fit:contain;object-position:center;margin-inline:auto}
+    .password-stage{height:100%;display:grid;place-items:center;background:linear-gradient(180deg,#dcecff,#f7fbff);border-radius:1.1cqw;position:relative;overflow:hidden}.door{width:15cqw;height:19cqw;border-radius:1cqw 1cqw .3cqw .3cqw;background:#345b86;border:.5cqw solid #1c3c62;position:relative;box-shadow:inset 0 0 0 .35cqw rgba(255,255,255,.08)}.door::after{content:'';position:absolute;width:1.1cqw;height:1.1cqw;border-radius:50%;background:var(--yellow);right:1.2cqw;top:9cqw}.door.open{background:#3a9b70;border-color:#1f6f4c}.door-status{position:absolute;top:1cqw;padding:.55cqw .85cqw;border-radius:999px;background:rgba(21,52,95,.92);color:#fff;font-weight:900}
+    .walk-stage,.bird-stage,.move-stage,.track-stage{position:relative;overflow:hidden;border-radius:1.15cqw;border:2px solid #cbddec;background:linear-gradient(#bce9ff 0 58%,#a8d878 58% 75%,#805f3e 75%);min-height:20cqw}
+    .walker{position:absolute;left:5%;bottom:14%;width:4.4cqw;height:7cqw;transition:left .35s ease}.walker .head{width:2.3cqw;height:2.3cqw;border-radius:50%;background:#d9a06a;margin:auto}.walker .body{width:2.8cqw;height:3.2cqw;background:var(--blue);border-radius:.7cqw;margin:-.1cqw auto 0}.walker .legs{display:flex;justify-content:center;gap:.35cqw}.walker .legs i{width:.55cqw;height:1.8cqw;background:#2b3142;transform-origin:top}.walker.frame-b .legs i:first-child{transform:rotate(20deg)}.walker.frame-b .legs i:last-child{transform:rotate(-20deg)}
+    .bird-stage{background:linear-gradient(#78c9f3 0 62%,#76ba58 62% 77%,#4c7a39 77%);min-height:22cqw}.bird{position:absolute;left:4%;top:38%;width:5.5cqw;height:3cqw;transition:left .25s linear,top .25s linear}.bird .body{position:absolute;left:1.4cqw;top:.7cqw;width:3cqw;height:1.7cqw;border-radius:50% 60% 60% 50%;background:#f3b633}.bird .head{position:absolute;right:0;top:.35cqw;width:1.7cqw;height:1.7cqw;border-radius:50%;background:#ffd15a}.bird .beak{position:absolute;right:-.7cqw;top:.95cqw;border-left:.8cqw solid #f28b2b;border-top:.35cqw solid transparent;border-bottom:.35cqw solid transparent}.bird .wing{position:absolute;left:2cqw;top:.2cqw;width:2.2cqw;height:1.15cqw;border-radius:50%;background:#d98b2e;transform-origin:left bottom;transform:rotate(-18deg)}.bird.frame-b .wing{transform:rotate(34deg)}
+    .cloud{position:absolute;width:7cqw;height:2cqw;border-radius:999px;background:rgba(255,255,255,.85)}.cloud::before,.cloud::after{content:'';position:absolute;border-radius:50%;background:inherit}.cloud::before{width:2.7cqw;height:2.7cqw;left:1.1cqw;top:-1.1cqw}.cloud::after{width:3.2cqw;height:3.2cqw;right:1cqw;top:-1.4cqw}
+    .move-stage{background:linear-gradient(135deg,#eaf5ff,#fff6e8);min-height:22cqw}.explorer-token{position:absolute;width:3.2cqw;height:3.2cqw;border-radius:50%;background:var(--orange);display:grid;place-items:center;color:#fff;font-size:1.7cqw;font-weight:900;left:48%;top:46%;transition:left .12s,top .12s}.move-pad{display:grid;grid-template-columns:repeat(3,3.3cqw);gap:.35cqw;justify-content:center}.move-pad button{width:3.3cqw;height:3.3cqw;border:0;border-radius:.8cqw;background:var(--blue);color:#fff;font-size:1.45cqw;font-weight:900}.move-pad .blank{visibility:hidden}
+    .track-stage{background:#142842;min-height:23cqw;outline:none}.track-stage:focus{box-shadow:0 0 0 .3cqw rgba(242,139,43,.35)}.track-seg{position:absolute;background:#d6b06f;border:.35cqw solid #8c6b3c;border-radius:1cqw;box-shadow:inset 0 0 0 .22cqw rgba(255,255,255,.15)}.track-start,.track-goal{position:absolute;width:5.5cqw;height:5.5cqw;border-radius:1cqw;display:grid;place-items:center;font-weight:950;color:#fff;z-index:2}.track-start{background:var(--green)}.track-goal{background:var(--yellow);color:var(--navy)}.chick{position:absolute;width:3cqw;height:3cqw;border-radius:50%;background:#ffd447;border:.28cqw solid #c68716;display:grid;place-items:center;z-index:5;transition:left .08s linear,top .08s linear}.chick::after{content:'›';font-size:1.6cqw;color:#9e6114;font-weight:950}.chick[data-dir="up"]::after{transform:rotate(-90deg)}.chick[data-dir="down"]::after{transform:rotate(90deg)}.chick[data-dir="left"]::after{transform:rotate(180deg)}
+    .game-overlay{position:absolute;inset:8%;z-index:10;border-radius:1.4cqw;display:none;place-items:center;text-align:center;padding:1.5cqw;background:rgba(12,28,46,.93);color:#fff}.game-overlay.show{display:grid}.game-overlay.success{background:rgba(22,113,73,.95)}.game-overlay.fail{background:rgba(122,33,33,.95)}.game-overlay strong{font-size:2.15cqw;display:block;margin-bottom:.45cqw}
+    .sensor-readout{padding:.65cqw .8cqw;border-radius:.85cqw;background:#152d4c;color:#fff}.sensor-readout b{color:var(--yellow)}
+    .io-flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:.8cqw;align-items:center}.io-box{padding:1.15cqw;border-radius:1.25cqw;background:#fff;border:2px solid var(--line);text-align:center}.io-box.input{background:#e9f8f0}.io-box.process{background:var(--sky)}.io-box.output{background:var(--cream)}
+    .octa-ring{position:relative;width:17cqw;height:17cqw;border-radius:50%;background:#26384c;border:1.1cqw solid #111e2e;margin:auto;box-shadow:inset 0 0 0 .45cqw #58697a,0 1cqw 2cqw rgba(0,0,0,.18)}.octa-screen{position:absolute;inset:5.2cqw 4.2cqw;border-radius:.8cqw;background:#071b28;color:#76f4ff;display:grid;place-items:center;text-align:center;font-weight:900;font-size:.9cqw;padding:.4cqw}.led-dot{position:absolute;width:1.55cqw;height:1.55cqw;border-radius:50%;background:#4c5967;box-shadow:0 0 .4cqw rgba(255,255,255,.15)}.led-dot.on{box-shadow:0 0 1.15cqw currentColor;background:currentColor}.aux-btn{position:absolute;right:-1.4cqw;top:7.3cqw;width:2.1cqw;height:3cqw;border-radius:.5cqw;background:#aeb9c5;border:.25cqw solid #56687a}
+    .traffic{display:grid;gap:.7cqw;width:8cqw;padding:1cqw;background:#26384c;border-radius:1.2cqw;margin:auto}.lamp{width:5cqw;height:5cqw;border-radius:50%;background:#4c5967;margin:auto;box-shadow:inset 0 0 0 .35cqw rgba(0,0,0,.25)}.lamp.red.on{background:#ef4747;box-shadow:0 0 1.6cqw #ef4747}.lamp.yellow.on{background:#ffd447;box-shadow:0 0 1.6cqw #ffd447}.lamp.green.on{background:#42d681;box-shadow:0 0 1.6cqw #42d681}
+    .screen-sim{position:relative;width:22cqw;height:22cqw;aspect-ratio:1;background:#091f2b;border:1cqw solid #27394a;border-radius:1.2cqw;margin:auto;overflow:hidden}.screen-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);background-size:2.2cqw 2.2cqw}.screen-cross{position:absolute;width:.8cqw;height:.8cqw;border-radius:50%;background:var(--yellow);transform:translate(-50%,-50%);box-shadow:0 0 .8cqw var(--yellow)}.axis-label{position:absolute;color:#fff;font-size:.72cqw;font-weight:850}.axis-label.x{right:.4cqw;bottom:.25cqw}.axis-label.y{left:.35cqw;top:.25cqw}.screen-text-item{position:absolute;color:#fff;white-space:nowrap;transform:translate(-50%,-50%);font-weight:850}.screen-text-item.title{color:#ffd447}.screen-text-item.center{color:#75e7ff}.screen-text-item.sign{color:#ff8b8b;font-size:.72cqw}
+    #landscapeCanvas{width:22cqw;height:22cqw;image-rendering:auto;border:1cqw solid #27394a;border-radius:1.2cqw;background:#091f2b;display:block;margin:auto}
+    .quiz-layout{display:grid;grid-template-columns:.34fr .66fr;gap:1.3cqw;align-items:stretch}.quiz-nav{display:grid;gap:.55cqw;align-content:start}.quiz-dot{border:0;border-radius:.8cqw;padding:.72cqw;background:#e8f1f8;color:var(--navy);font-weight:900;text-align:left}.quiz-dot.active{background:var(--blue);color:#fff}.quiz-dot.ok:not(.active){background:#e9f8f0;color:#146b49}.quiz-dot.bad:not(.active){background:#fff0f0;color:#922c2c}.quiz-panel{background:#fff;border:2px solid var(--line);border-radius:1.4cqw;padding:1.35cqw;display:grid;gap:1cqw;align-content:start}.answers{display:grid;gap:.6cqw;margin-top:.75cqw}.answer{display:flex;gap:.65cqw;align-items:flex-start;padding:.75cqw .85cqw;border-radius:.9cqw;border:2px solid #dce6ef;background:#fff}.answer:has(input:checked){border-color:var(--blue);background:#f0f6ff}.answers.locked .answer{opacity:.8}.answers.locked .answer:has(input:checked){border-color:var(--green);background:#e9f8f0}.feedback-box{padding:.8cqw 1cqw;border-radius:.9cqw;background:#edf3f8;color:var(--ink);min-height:3.8cqw}.feedback-box.ok{background:#e9f8f0;color:#146b49}.feedback-box.bad{background:#fff0f0;color:#922c2c}
+    .reflection{background:linear-gradient(135deg,#15345f,#285aa6);color:#fff}.reflection p{color:#eaf3ff}.reflection h2{color:#fff}.reflection .card{color:var(--ink)}.reflection .card p{color:var(--ink)}.reflection textarea{width:100%;min-height:8cqw;resize:none;border:2px solid #d7e3ee;border-radius:1cqw;padding:1cqw;outline:none}.reflection textarea:focus{border-color:var(--orange);box-shadow:0 0 0 .25cqw rgba(242,139,43,.18)}
+    .lesson-nav{position:absolute;inset:auto 2.2cqw 1.65cqw 2.2cqw;display:flex;justify-content:space-between;align-items:center;z-index:40;pointer-events:none}.lesson-nav>*{pointer-events:auto}
+    .lesson-nav .nav-btn{border:0;border-radius:999px;padding:.8cqw 1.35cqw;font-weight:900;background:var(--navy);color:#fff;box-shadow:0 .55cqw 1.2cqw rgba(21,52,95,.25);transition:.2s transform,.2s filter}
+    .lesson-nav .nav-btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+    .lesson-nav .nav-btn.prev{background:#fff;color:var(--navy);border:2px solid #bfd2e5;box-shadow:none}
+    .lesson-nav .nav-btn.finish{background:var(--green)}
+    .lesson-nav .nav-btn.next.locked{opacity:.4;filter:saturate(.35);box-shadow:none;cursor:not-allowed}
+    .lesson-nav .nav-progress{flex:1;max-width:38cqw;height:1.4cqw;border-radius:999px;background:#d6e6f7;overflow:hidden;margin:0 1cqw 0 0;pointer-events:none}
+    .lesson-nav .nav-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#1a6cd1,#4c97ff);border-radius:999px;transition:width .25s ease}
+    .lesson-nav .nav-count{flex:none;min-width:5.4cqw;text-align:center;padding:.22cqw .55cqw;border-radius:999px;background:#e7f0fb;border:2px solid #c4d9ef;color:var(--navy);font-weight:900;font-size:var(--fs-note);margin-right:1.4cqw;pointer-events:none;white-space:nowrap}
+    .ctrl-group{display:flex;gap:.55cqw;margin-right:1.1cqw}
+    .lesson-nav .ctrl-btn{pointer-events:auto;flex:none;width:3cqw;height:3cqw;border:2px solid #c9dcef;border-radius:.9cqw;display:grid;place-items:center;background:#eef4fb;color:var(--navy);padding:0;transition:.15s transform,.15s filter,.15s background}
+    .lesson-nav .ctrl-btn:hover{transform:translateY(-2px);filter:brightness(1.03);background:#e4eef9}
+    .lesson-nav .ctrl-btn:active{transform:scale(.94)}
+    .lesson-nav .ctrl-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;filter:none}
+    .lesson-nav .ctrl-btn svg{width:1.87cqw;height:1.87cqw;display:block}
+    .lesson-nav .ctrl-btn .fs-close{display:none}
+    .lesson-nav .ctrl-btn.fs-active .fs-open{display:none}
+    .lesson-nav .ctrl-btn.fs-active .fs-close{display:block}
+    .lesson-nav .ctrl-btn.narr-off{opacity:.45;filter:grayscale(1);background:#eef1f4;border-color:#d9dfe5;color:#7a8794}
+    .lesson-nav .ctrl-btn.narr-off:hover{transform:none;filter:grayscale(1);opacity:.45}
+    .lesson-nav .ctrl-btn.narr-on{background:var(--green);border-color:var(--green);color:#fff;opacity:1;filter:none}
+    .lesson-nav .ctrl-btn.narr-on svg{animation:voice-pulse 1.1s ease-in-out infinite}
+    @keyframes voice-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+    .briefing{position:relative;background:linear-gradient(135deg,#eaf5ff,#fff6e8 110%)}
+    .briefing .briefing-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;z-index:0}
+    .briefing .content{position:relative;z-index:1;grid-template-columns:1fr;align-content:safe center}
+    .briefing-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:1cqw;margin-top:1.4cqw}
+    .briefing-meta div{padding:1.05cqw 1.1cqw;border-radius:1.1cqw;background:rgba(255,255,255,.78);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.5)}
+    .briefing-meta b{display:block;color:var(--blue);font-size:var(--fs-sub)}
+    .briefing-meta span{font-size:var(--fs-body);color:var(--ink)}
+    #deck .slide:first-of-type .nav-progress,#deck .slide:first-of-type .nav-count,#deck .slide:last-of-type .nav-progress,#deck .slide:last-of-type .nav-count{display:none}
+    #deck .slide:first-of-type .nav-progress{display:block}
+    #deck .slide:first-of-type .nav-progress i{transition:none}
+    #deck .slide:first-of-type .nav-count{display:inline-block}
+    #deck .slide:last-of-type .nav-progress{display:block}
+    #deck .slide:last-of-type .nav-progress i{width:100%;transition:none}
+    #deck .slide:last-of-type .nav-count{display:inline-block}
+    #toast{position:fixed;left:50%;bottom:2.4cqw;transform:translate(-50%,100px);z-index:150;background:var(--navy);color:#fff;padding:.85cqw 1.4cqw;border-radius:999px;font-weight:850;opacity:0;transition:.25s}.show-toast{opacity:1!important;transform:translate(-50%,0)!important}
+    .completion-modal{position:fixed;inset:0;z-index:300;background:rgba(10,25,43,.82);display:none;place-items:center;padding:24px}.completion-modal.show{display:grid}.completion-card{width:min(650px,92vw);padding:36px;border-radius:26px;background:#fff;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.3)}.completion-card h2{font-size:42px;margin-bottom:12px}.completion-card button{border:0;border-radius:999px;padding:13px 22px;background:var(--green);color:#fff;font-weight:900}
+    @media(max-width:700px){.slide{padding:10px}.canvas{border-radius:1.2cqw}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition-duration:.001ms!important;animation-duration:.001ms!important}}
+  
+    .shared-editor{position:fixed;top:0;left:0;width:0;height:0;z-index:25;border:2px solid #d5e5f3;border-radius:1.4cqw;overflow:hidden;background:#fff;opacity:0;visibility:hidden;pointer-events:none;box-shadow:0 .8cqw 2cqw rgba(21,52,95,.18);transition:opacity .18s ease}
+    .shared-editor.active{opacity:1;visibility:visible;pointer-events:auto}
+    .shared-editor iframe{width:100%;height:100%;border:0;display:block}
+    
+    .mini-card{background:#fff;border:2px solid var(--line);border-radius:1.2cqw;padding:1cqw 1.1cqw;font-size:var(--fs-body);line-height:1.42;color:var(--ink)}
+    .gameover-gif{display:block;max-height:24cqw;width:auto;margin-inline:auto;border-radius:1cqw}
+
+    .video-side{display:grid;place-items:center;min-height:0}.zoom-video{transform:scale(1.2);transform-origin:center}
+    .rounded-gif{display:block;max-width:100%;max-height:100%;object-fit:contain;border-radius:1.4cqw;transform:scale(1.1);transform-origin:center}
+    .octabio-video{display:block;width:100%;height:100%;max-height:100%;object-fit:contain;border-radius:1cqw}
+
+    .full-img{display:block;width:auto;height:100%;max-width:100%;min-height:0;object-fit:contain;margin-inline:auto;align-self:center;border-radius:1cqw}
+    .code-img{display:block;max-height:15cqw;width:auto;margin-inline:auto;border-radius:1cqw}
+
+    .code-img-lg{display:block;max-height:26cqw;width:auto;margin-inline:auto;border-radius:1cqw}
+    .traffic-big{width:14.4cqw;gap:1.26cqw;padding:1.62cqw}
+    .traffic-big .lamp{width:9.9cqw;height:9.9cqw}
+    .traffic-anim .lamp.red{animation:trafficR 9s infinite;animation-timing-function:steps(1,end)}
+    .traffic-anim .lamp.yellow{animation:trafficY 9s infinite;animation-timing-function:steps(1,end)}
+    .traffic-anim .lamp.green{animation:trafficG 9s infinite;animation-timing-function:steps(1,end)}
+    .traffic-anim .lamp span{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-weight:900;font-size:1.53cqw;opacity:0;text-shadow:0 .15cqw .3cqw rgba(0,0,0,.45);letter-spacing:.05cqw}
+    .traffic-anim .lamp.green span{animation:labG 9s infinite;animation-timing-function:steps(1,end)}
+    .traffic-anim .lamp.yellow span{animation:labY 9s infinite;animation-timing-function:steps(1,end)}
+    .traffic-anim .lamp.red span{animation:labR 9s infinite;animation-timing-function:steps(1,end)}
+    .traffic-big .lamp{position:relative}
+    @keyframes trafficG{0%,33.2%{background:#42d681;box-shadow:0 0 1.6cqw #42d681}33.3%,100%{background:#4c5967;box-shadow:inset 0 0 0 .35cqw rgba(0,0,0,.25)}}
+    @keyframes trafficY{0%,33.2%,50%,83.2%{background:#4c5967;box-shadow:inset 0 0 0 .35cqw rgba(0,0,0,.25)}33.3%,49.9%{background:#ffd447;box-shadow:0 0 1.6cqw #ffd447}83.3%,100%{background:#ffd447;box-shadow:0 0 1.6cqw #ffd447}}
+    @keyframes trafficR{0%,49.9%,83.3%,100%{background:#4c5967;box-shadow:inset 0 0 0 .35cqw rgba(0,0,0,.25)}50%,83.2%{background:#ef4747;box-shadow:0 0 1.6cqw #ef4747}}
+    @keyframes labG{0%,33.2%{opacity:1}33.3%,100%{opacity:0}}
+    @keyframes labY{0%,33.2%,50%,83.2%{opacity:0}33.3%,49.9%{opacity:1}83.3%,100%{opacity:1}}
+    @keyframes labR{0%,49.9%,83.3%,100%{opacity:0}50%,83.2%{opacity:1}}
+    .traffic-cap{font-size:var(--fs-sub);color:var(--ink);font-weight:800;text-align:center}
+    .code-img-tall{display:block;width:100%;height:100%;max-height:none;object-fit:contain;border-radius:1cqw}
+    .gif-crop{display:block;width:166.67%;height:auto;position:absolute;left:-33.33%;top:50%;transform:translateY(-50%)}
+    .paso-gif{display:block;width:auto;height:auto;max-width:100%;max-height:43.2cqw;object-fit:contain;border-radius:1cqw;justify-self:center;align-self:center}
+    .mission-gif{display:block;max-height:37cqw;width:auto;margin-inline:auto;border-radius:1cqw}
+    .color-gif{display:block;max-height:13cqw;width:auto;margin-inline:auto}
+    .chick-img{display:block;height:15cqw;width:auto;margin-inline:auto}
+  
+    /* === Guía 3 · variables, clones y estados === */
+    .eyebrow.purple{background:#8253c9}
+    .btn.purple{background:#8253c9}
+    .card.green{background:#edf9f3;border-color:#bfe4d0}
+    .card.purple{background:#f4efff;border-color:#d8c8f6}
+    .quote{padding:.8cqw 1cqw;border-left:.45cqw solid var(--orange);background:#fff;border-radius:0 1cqw 1cqw 0;font-weight:800}
+    .muted{color:#627488}
+    code{font-family:"Cascadia Code",Consolas,monospace;background:#eef4fb;border-radius:.35cqw;padding:.05cqw .28cqw}
+    .scratch-block.var{background:#e99500}.scratch-block.anim{background:#1da87a}
+    .shared-slot{position:relative;min-height:0;border:2px solid #d5e5f3;border-radius:1.4cqw;overflow:hidden;background:#fff}.blocks-embed{position:relative;min-height:0;border:2px solid #d5e5f3;border-radius:1.4cqw;overflow:hidden;background:#fff}.blocks-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+    .var-demo{display:grid;grid-template-columns:.9fr 1.1fr;gap:1.3cqw;align-items:stretch}
+    .var-box{display:grid;place-items:center;gap:.8cqw;border:2px solid #c6dff4;border-radius:1.4cqw;background:linear-gradient(180deg,#f9fdff,#eaf5ff);padding:1.1cqw}
+    .var-label{width:15cqw;padding:.8cqw 1cqw;border-radius:1cqw;background:var(--navy);color:#fff;text-align:center;box-shadow:0 .6cqw 1.2cqw rgba(21,52,95,.18)}
+    .var-label b{display:block;font-size:1.4cqw}.var-label strong{display:block;margin-top:.4cqw;padding:.7cqw;background:#fff;color:var(--orange);border-radius:.65cqw;font-size:3.1cqw;font-family:monospace}
+    .counter-track{display:flex;align-items:center;justify-content:center;gap:.55cqw;flex-wrap:wrap}
+    .counter-chip{padding:.65cqw .85cqw;border-radius:.8cqw;background:#fff;border:2px solid var(--line);font-weight:900}
+    .counter-chip.arrow{border:0;background:transparent;color:var(--blue);font-size:1.8cqw}
+    .clone-stage{position:relative;min-height:22cqw;border-radius:1.2cqw;border:2px solid #c9ddeb;background:linear-gradient(#8fd7ff 0 58%,#74bd57 58% 100%);overflow:hidden}
+    .clone-original{position:absolute;left:7%;bottom:8%;width:5cqw;height:5cqw;border-radius:50%;background:#ef4747;display:grid;place-items:center;color:#fff;font-size:2.5cqw;border:.35cqw solid #bd2f2f;box-shadow:0 .4cqw 1cqw rgba(0,0,0,.16)}
+    .clone-apple{position:absolute;width:3.2cqw;height:3.2cqw;border-radius:50%;background:#ef4747;border:.25cqw solid #bd2f2f;display:grid;place-items:center;color:#fff;font-size:1.6cqw;transition:.2s}
+    .clone-note{position:absolute;left:1cqw;top:1cqw;padding:.45cqw .7cqw;border-radius:999px;background:rgba(21,52,95,.92);color:#fff;font-weight:900}.clone-label{position:absolute;left:7%;bottom:1cqw;padding:.4cqw .8cqw;border-radius:999px;background:rgba(21,52,95,.92);color:#fff;font-weight:900;font-size:var(--fs-note)}.clone-count{position:absolute;right:1cqw;top:1cqw;padding:.4cqw .8cqw;border-radius:999px;background:rgba(21,52,95,.92);color:#fff;font-weight:900;font-size:var(--fs-note)}
+    .apple-game{position:relative;min-height:23cqw;border-radius:1.2cqw;overflow:hidden;border:2px solid #c9ddeb;background:linear-gradient(#91dbff 0 62%,#77bf57 62%)}
+    .apple-game .tree{position:absolute;bottom:0;width:15cqw;height:18cqw}.apple-game .tree .trunk{position:absolute;left:5.6cqw;bottom:0;width:3.5cqw;height:8cqw;background:#7b4b2a}.apple-game .tree .crown{position:absolute;left:0;top:0;width:15cqw;height:12cqw;background:#2f9f56;border-radius:48%}.apple-game .tree.a{left:16%}.apple-game .tree.b{right:16%}.apple-game .tree.only{left:50%;transform:translateX(-50%)}.counter-flow{display:flex;align-items:center;gap:.5cqw;flex-wrap:wrap}.cv{padding:.4cqw .85cqw;border-radius:.7cqw;background:#e99500;border:2px solid #c77e00;color:#fff;font-weight:900;box-shadow:inset 0 -3px 0 rgba(0,0,0,.14)}.cf{color:var(--blue);font-weight:950}.vaca-formula{display:flex;justify-content:center;margin-bottom:.5cqw}
+    .apple-token{position:absolute;width:2.3cqw;height:2.3cqw;border-radius:50%;background:#ef4747;border:.2cqw solid #b92d2d;cursor:pointer}
+    .score-badge{position:absolute;right:1cqw;top:1cqw;background:#fff;padding:.5cqw .75cqw;border-radius:.75cqw;border:2px solid #d8e7f4;font-weight:900;color:var(--navy)}
+    .state-machine{display:grid;grid-template-columns:1fr auto 1fr;gap:1cqw;align-items:center}
+    .state-node{padding:1cqw;border-radius:1.2cqw;background:#fff;border:2px solid var(--line);text-align:center}.state-node.active{background:#edf9f3;border-color:#9bd6b6}.state-arrow{font-size:2.1cqw;font-weight:950;color:var(--orange)}
+    .cover{background:radial-gradient(circle at 72% 38%,rgba(255,209,90,.2),transparent 25%),radial-gradient(circle at 90% 70%,rgba(40,166,106,.18),transparent 24%),linear-gradient(135deg,#fff 0 43%,#eaf5ff 100%)}.cover .content{grid-template-columns:1.02fr .98fr}
+    .cover-scene{min-height:31cqw;border-radius:2cqw;position:relative;overflow:hidden;background:linear-gradient(#7ed0f6 0 52%,#69b84f 52%);border:2px solid #d7e6f4}
+    .cover-scene .barn{position:absolute;right:8%;bottom:9%;width:10cqw;height:11cqw;background:#c94e3e;border-radius:.5cqw}.cover-scene .barn:before{content:'';position:absolute;left:-1cqw;top:-4.8cqw;border-left:6cqw solid transparent;border-right:6cqw solid transparent;border-bottom:5cqw solid #8f332d}
+    .cover-scene .tree{position:absolute;left:8%;bottom:7%;width:12cqw;height:18cqw}.cover-scene .tree:before{content:'';position:absolute;left:4.6cqw;bottom:0;width:2.7cqw;height:8cqw;background:#79502e}.cover-scene .tree:after{content:'';position:absolute;left:0;top:0;width:12cqw;height:11cqw;border-radius:50%;background:#349d53}
+    .cover-scene .apple{position:absolute;width:1.65cqw;height:1.65cqw;border-radius:50%;background:#ef4747;z-index:2}.cover-scene .hen{position:absolute;font-size:3.8cqw;bottom:6%;z-index:3}.cover-scene .hen.h1{left:45%}.cover-scene .hen.h2{left:57%;bottom:11%}
+    .cover-scene .octa{position:absolute;right:25%;bottom:8%;width:10cqw;height:10cqw;border-radius:50%;background:#243447;border:1cqw solid #111e2e;display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 .8cqw 1.8cqw rgba(0,0,0,.2)}.cover-scene .octa:after{content:'OCTABIO';font-size:.9cqw}
+    .cover-scene .varpop{position:absolute;top:9%;right:8%;padding:.7cqw 1cqw;background:#fff;border-radius:1cqw;border:2px solid #d8e7f4;font-weight:900;color:var(--blue)}
+  
+    .slide-side-img{display:block;width:auto;max-height:37.8cqw;border-radius:1.3cqw;box-shadow:0 1cqw 2cqw rgba(21,52,95,.18)}
+  
+    #s3 .quick-check p,#s3 .quick-check .key-q,#s3 .quick-check .btn,#s3 .quick-check .feedback{font-size:1.1cqw}
+    #s3 .quick-check .control-row{justify-content:center}
+    #s3 .quick-check .card-img{width:16cqw;height:11cqw}
+    #s3 .card:nth-child(3) .card-img{width:13.6cqw;height:13.6cqw}
+    #s3 .card:nth-child(4) .crop-wrap{position:relative;width:16cqw;aspect-ratio:32/21;overflow:hidden;border-radius:.9cqw;margin-inline:auto;border:1px solid #dce6ef}
+    #s3 .card:nth-child(4) .crop-wrap img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:166.67%;height:auto}
+  
+    #s4 .card.white{padding:.75cqw .9cqw}
+    #s4 .check-list{gap:.28cqw}
+    #s4 .check-list li{padding:.4cqw .55cqw}
+  
+    .basket-scene{position:relative;width:26cqw;height:16cqw;display:grid;place-items:end center;background:linear-gradient(#dff2ff 0 55%,#a8d878 55%);border-radius:1.2cqw;border:2px solid #c9ddeb;overflow:hidden}
+    .basket-scene .tree{position:absolute;left:0;bottom:0;font-size:13cqw;line-height:1;z-index:1}
+    .tree-apple{position:absolute;font-size:2.1cqw;cursor:pointer;z-index:3;transition:transform .12s;text-shadow:0 0 .5cqw rgba(255,255,255,.7)}
+    .tree-apple:hover{transform:scale(1.35)}
+    .basket-scene .basket{position:absolute;right:0;bottom:0;display:flex;align-items:center;gap:.6cqw;font-size:7cqw;line-height:1;z-index:2}
+    .fly-apple{position:absolute;left:14%;top:36%;font-size:2.6cqw;opacity:0;pointer-events:none;z-index:6}
+    .fly-apple.fly{animation:appleToBasket .7s ease forwards}
+    @keyframes appleToBasket{0%{opacity:1;transform:translate(0,0)}30%{opacity:1;transform:translate(calc(var(--dx)*.4),calc(var(--dy)*.4 - 10px))}100%{opacity:0;transform:translate(var(--dx),var(--dy))}}
+    .thrown-apple{position:absolute;font-size:2.6cqw;opacity:0;pointer-events:none;z-index:6;animation:appleThrow .8s ease forwards}
+    @keyframes appleThrow{0%{opacity:0;transform:translate(0,0) rotate(0)}15%{opacity:1}100%{opacity:0;transform:translate(18cqw,-9cqw) rotate(250deg)}}
+    .var-label{position:relative}
+    .var-pop{position:absolute;right:-1.8cqw;top:-1.2cqw;background:var(--green);color:#fff;font-weight:900;padding:.3cqw .6cqw;border-radius:.6cqw;font-size:1.2cqw;opacity:0;transform:scale(.5);pointer-events:none;box-shadow:0 .3cqw .6cqw rgba(21,52,95,.2)}
+    .var-pop.neg{background:var(--red)}
+    .var-pop.reset{background:var(--orange)}
+    .var-pop.show{animation:popShow 1.4s ease forwards}
+    .basket-pop{position:absolute;right:10%;bottom:42%;background:var(--orange);color:#fff;font-weight:900;padding:.35cqw .7cqw;border-radius:.7cqw;font-size:1.2cqw;opacity:0;transform:scale(.5);pointer-events:none;z-index:8;animation:popShow 1.4s ease forwards;white-space:nowrap}
+    @keyframes popShow{0%{opacity:0;transform:scale(.5)}20%{opacity:1;transform:scale(1.2)}40%{transform:scale(1)}100%{opacity:0;transform:scale(1)}}30%{opacity:1}100%{opacity:0;transform:translate(2.5cqw,6cqw)}}
+  
+    #s2 .quick-check .card-img{height:11cqw;width:16cqw}
+    #s2 .quick-check p,#s2 .quick-check .key-q,#s2 .quick-check .btn,#s2 .quick-check .feedback{font-size:1.1cqw}
+    #s2 .quick-check .control-row{justify-content:center}
+  
+    #s2 .card{gap:.25cqw;padding:1.1cqw}
+    #s2 .card h3{line-height:1.1}
+  
+    #s2 .card{gap:.35cqw;padding:1.05cqw 1.1cqw}
+    #s2 .card h3{line-height:1.1}
+    #s2 .quick-check .card-img{height:11.5cqw;width:16cqw}
+    #s2 .card:nth-child(2) .card-img,#s2 .card:nth-child(3) .card-img{width:100%;height:14.5cqw;object-fit:contain;margin-inline:auto}
+    #s2 .card:nth-child(4) .card-img{width:100%;height:11.5cqw;object-fit:contain;margin-inline:auto}
+    #s2 .quick-check p{line-height:1.35}
+    #s2 .quick-check .key-q{padding:.45cqw .6cqw}
+    #s2 .quick-check .feedback{padding:.5cqw .7cqw}
+  
+    #s2 .flow-card p{font-size:var(--fs-body);line-height:1.35}
+    #s2 .flow-head b{font-size:var(--fs-body)}
+  
+    #s11 .flow-row{grid-template-columns:.8fr auto 1.4fr auto .9fr;gap:.6cqw}
+    #s11 .flow-card{padding:.7cqw .8cqw;gap:.2cqw}
+    #s11 .flow-card h3{font-size:var(--fs-body)}
+    #s11 .flow-card p{font-size:var(--fs-body);line-height:1.25}
+    #s11 .flow-arrow{font-size:1.8cqw}
+  
+    #s11 .flow-row{grid-template-columns:.7fr auto 1.1fr auto 1.3fr;gap:.5cqw}
+    #s11 .flow-card{padding:.6cqw .7cqw;gap:.15cqw}
+    #s11 .flow-card h3{font-size:var(--fs-body)}
+    #s11 .flow-card p{font-size:var(--fs-body);line-height:1.2}
+    #s11 .flow-arrow{font-size:1.6cqw}
+  </style>
+</head>
+
+<body>
+<main id="deck">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="slide" id="portada" data-title="Portada">
+  <div class="canvas briefing">
+    <img class="briefing-bg-img" src="assets/img/portada.png" alt="" aria-hidden="true">
+    <div class="slide-eyebrow"><div class="eyebrow orange">Guía 3 · Robótica</div></div>
+    <div class="content">
+      <div style="display:grid;gap:1.2cqw;align-content:center;max-width:30cqw">
+        <h1>Alumbrado <span class="highlight">inteligente</span></h1>
+        <p class="lead">Construirás un poste que detecta la luz con una fotocelda y enciende el LED cuando oscurece. Programarás el umbral y ajustarás el sistema hasta que funcione.</p>
+        <div class="briefing-meta">
+          <div><b>Guía:</b><span> 3 · Robótica</span></div>
+          <div><b>Ruta:</b><span> Sensores y actuadores</span></div>
+          <div><b>Reto:</b><span> Alumbrado inteligente</span></div>
+        </div>
+        <div class="pista-box"><span class="note-icon">?</span><p><b>Pregunta guía:</b> ¿cómo puede un robot decidir cuándo encender una luz según lo que detecta?</p></div>
+      </div>
+    </div><div class="lesson-nav" data-nav></div>
+  </div>
+</section>
+
+<section class="slide" id="s13" data-title="Misión: alumbrado inteligente">
+  <div class="canvas"><div class="slide-eyebrow"><div class="eyebrow orange">Misión</div></div>
+    <div class="content" style="align-content:stretch">
+      <h2>Un parque necesita iluminación inteligente</h2>
+      <div class="two-col wide-right" style="align-items:stretch">
+        <div style="display:grid;gap:.85cqw;align-content:center">
+          <p class="lead">En un parque de la ciudad, la iluminación es un problema: hay pocas luces y no siempre se encienden a tiempo. En la oscuridad, el parque se vuelve inseguro y las personas no ven por dónde caminan.</p>
+          <div class="card green"><h3>La solución</h3><p>Para resolverlo, vas a construir un <b>sistema de alumbrado inteligente</b> con Octabio: un poste que detecta la luz del ambiente con una <b>fotocelda</b>, enciende la luz cuando oscurece y la apaga cuando hay suficiente luz, manteniendo el parque siempre iluminado y seguro.</p></div>
+          
+        </div>
+        <div style="display:grid;align-content:center;justify-items:center;gap:.7cqw">
+          <img class="slide-side-img" style="width:100%;height:auto;max-height:none" src="assets/img/alumbrado.gif" alt="El poste ilumina el parque cuando oscurece y se apaga cuando hay luz">
+          <span class="challenge-caption">Así funciona el alumbrado inteligente.</span>
+        </div>
+      </div>
+    </div><div class="lesson-nav" data-nav></div>
+  </div>
+</section>
+
+<section class="slide" id="s14" data-title="Sensores y actuadores">
+  <div class="canvas"><div class="slide-eyebrow"><div class="eyebrow">Nuevo concepto</div></div>
+    <div class="content two-col" style="grid-template-columns:1fr 1fr;align-items:stretch;gap:1.6cqw">
+      <div style="display:grid;gap:.9cqw;align-content:center">
+        <h2>Sensores y actuadores</h2>
+        <p class="lead">Un sistema como el alumbrado inteligente usa dos tipos de elementos: sensores y actuadores.</p>
+        <p><b>Sensor:</b> detecta o mide información del entorno. En nuestro sistema, la <b>fotocelda</b> mide cuánta luz hay en el ambiente.</p>
+        <p><b>Actuador:</b> produce una acción o efecto. En nuestro sistema, el <b>LED</b> enciende la luz del poste.</p>
+        <div class="pista-box"><span class="note-icon">i</span><p>El sensor <b>recibe</b> información del mundo y el actuador <b>ejecuta</b> una acción que interactúa con él.</p></div>
+      </div>
+      <div style="display:grid;gap:1cqw;align-content:center;justify-items:center">
+        <img class="slide-side-img" style="width:100%;height:auto;max-height:none" src="assets/img/sensoractuador.png" alt="Diagrama sensor → programa → actuador: la fotocelda mide la luz y el LED enciende el poste">
+        <div class="flow-row" style="width:100%"><div class="flow-card"><h3>Sensor</h3><p>Mide la luz</p></div><div class="flow-arrow">→</div><div class="flow-card"><h3>Programa</h3><p>Decide según el valor</p></div><div class="flow-arrow">→</div><div class="flow-card"><h3>Actuador</h3><p>Enciende o apaga</p></div></div>
+      </div>
+    </div><div class="lesson-nav" data-nav></div>
+  </div>
+</section>
+
+<section class="slide" id="s15" data-title="El LED">
+  <div class="canvas"><div class="slide-eyebrow"><div class="eyebrow purple">El elemento</div></div>
+    <div class="content two-col" style="align-items:stretch">
+      <div style="display:grid;gap:.9cqw;align-content:center">
+        <h2>El LED</h2>
+        <p class="lead">Integra un <b>LED RGB</b> y tres interruptores para controlar manualmente los colores <b>rojo, verde y azul</b>; si los enciendes todos a la vez tienes <b>luz blanca</b>.</p>
+        <p>Al conectarlo a Octabio puedes controlar su encendido y apagado. Se controla con un bloque dedicado: aquí seleccionas el <b>puerto</b> de Octabio al que se conecta y el <b>estado</b> (encendido o apagado).</p>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+        <div style="display:grid;gap:2cqw;justify-items:center;transform:translateY(5%)">
+          <img class="slide-side-img" style="max-height:21cqw;width:auto;display:block;margin-inline:auto" src="assets/img/led.png" alt="Módulo LED RGB de Octabio">
+          <img class="block-img" style="max-height:6cqw" src="assets/img/bloqueled.png" alt="Bloque para controlar el LED">
+        </div>
+      </div>
+    </div><div class="lesson-nav" data-nav></div>
+  </div>
+</section>
+
+<section class="slide" id="s16" data-title="La fotocelda">
+  <div class="canvas"><div class="slide-eyebrow"><div class="eyebrow purple">El elemento</div></div>
+    <div class="content two-col" style="align-items:stretch">
+      <div style="display:grid;gap:.9cqw;align-content:center">
+        <h2>La fotocelda</h2>
+        <p class="lead">Sensor que mide la <b>intensidad de luz</b> del ambiente. Su fotorresistencia varía según la luz que recibe: valores <b>bajos</b> con poca luz y valores <b>altos</b> con mucha luz.</p>
+        <p>Se lee con el bloque de sensores <b>analógicos</b> (aparece como potenciómetro, pero puedes cambiar el sensor como se muestra en la imagen). Aquí seleccionas el <b>puerto</b> de Octabio y la forma de mostrarse: un valor de <b>0 a 4095</b> o un <b>porcentaje</b>.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+        <div style="display:grid;gap:1cqw;justify-items:center;transform:translateY(5%)">
+          <img class="slide-side-img" style="max-height:18.5cqw;width:auto;display:block;margin-inline:auto" src="assets/img/fotocelda.png" alt="Sensor de fotocelda">
+          <img class="block-img" style="max-height:18.5cqw" src="assets/img/bloquefoto.png" alt="Bloque para leer la fotocelda">
+        </div>
+      </div>
+    </div><div class="lesson-nav" data-nav></div>
+  </div>
+</section>
+
+<section class="slide" id="s17" data-title="El umbral">
+  <div class="canvas"><div class="slide-eyebrow"><div class="eyebrow purple">Nuevo concepto</div></div>
+    <div class="content two-col" style="grid-template-columns:.845fr 1.155fr;align-items:stretch">
+      <div style="display:grid;gap:.85cqw;align-content:center">
+        <h2>El umbral</h2>
+        <p class="lead">Un umbral es un número que separa dos estados.</p>
+        <p>Por ejemplo: si la lectura de la fotocelda es <b>menor que el umbral</b>, indica <b>"poca luz"</b> o noche; si es <b>mayor</b>, indica <b>"mucha luz"</b> o día.</p>
+        <p>Ese valor lo debes hallar entendiendo qué valores lee el sensor y determinando cuál es el número que separa un estado del otro.</p>
+      </div>
+      <div style="display:grid;place-items:center">
+        <img class="slide-side-img" style="width:100%;height:auto;max-height:none" src="assets/img/umbral.png" alt="Diagrama del umbral: la lectura menor indica poca luz y la mayor indica mucha luz">
+      </div>
+    </div><div class="lesson-nav" data-nav></div>
+  </div>
+</section>
+
+<section class="slide" id="s18" data-title="Construcción en 4 pasos">
+  <div class="canvas"><div class="slide-eyebrow"><div class="eyebrow orange">Vamos a construir</div></div>
+    <div class="content two-col" style="grid-template-columns:.95fr 1.05fr;align-items:stretch">
+      <div style="display:grid;gap:.9cqw;align-content:center">
+        <h2>Construyamos el poste inteligente</h2>
+        <p class="lead">Ya aprendiste lo necesario. Ahora vas a construir tu sistema de alumbrado inteligente en 4 pasos.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8cqw">
+          <div class="mini-card"><b>1 · Estructura:</b> arma el poste y sus elementos.</div>
+          <div class="mini-card"><b>2 · Conexión:</b> conecta la fotocelda y el LED a Octabio.</div>
+          <div class="mini-card"><b>3 · Programación:</b> programa el comportamiento del sistema.</div>
+          <div class="mini-card"><b>4 · Pruebas:</b> prueba el funcionamiento y ajusta el umbral.</div>
+        </div>
+      </div>
+      <div style="display:grid;place-items:center">
+        <img class="slide-side-img" style="width:100%;height:auto;max-height:none" src="assets/img/alumbrado.gif" alt="Sistema de alumbrado inteligente funcionando en el parque">
+      </div>
+    </div><div class="lesson-nav" data-nav></div>
+  </div>
+</section>
+
+<section class="slide" id="s19" data-title="Construcción del poste">
+  <div class="canvas"><div class="slide-eyebrow"><div class="eyebrow green">Construcción</div></div>
+    <div class="content" style="display:grid;grid-template-rows:auto 1fr;gap:1cqw">
+      <div><h2>1. Arma la estructura del poste</h2></div>
+      <div class="card white" style="display:grid;gap:.8cqw;align-content:center;min-height:0;position:relative">
+        
+        <span id="estructuraLabel" style="position:absolute;top:.7cqw;left:2.2cqw;font-weight:900;color:var(--navy);z-index:2">Materiales</span>
+        <div style="display:flex;align-items:center;gap:.8cqw;min-height:0;padding-top:2cqw">
+          <button class="btn secondary" id="estructuraPrev" style="flex:none">← Anterior</button>
+          <div style="flex:1;display:grid;place-items:center;align-content:center;min-height:0">
+            <div id="estructuraIntro" style="display:none;grid;justify-items:center;text-align:center;background:#fff;border:2px solid var(--line);border-radius:1.2cqw;padding:2cqw;width:100%;max-width:36cqw;gap:1.2cqw">
+              <p style="font-size:var(--fs-sub)">Prepara tus piezas MOC y sigue los pasos para armar la estructura del poste. Usa las flechas laterales para ver los pasos de construcción. Primero prepara los bloques que necesitas y luego arma la estructura paso a paso.</p>
+              <div style="width:100%;max-width:20cqw;overflow:hidden;border-radius:.8cqw;aspect-ratio:10/9;margin-inline:auto"><img src="assets/img/lego.gif" alt="Piezas MOC de LEGO" style="width:100%;height:auto;display:block"></div>
+            </div>
+            <img id="estructuraImg" class="slide-side-img" style="max-height:35.2cqw;width:auto;display:block;margin-inline:auto;object-fit:contain;display:none" src="assets/img/estructura/1_4x.png" alt="Paso de construcción de la estructura del poste">
+          </div>
+          <button class="btn secondary" id="estructuraNext" style="flex:none">Siguiente →</button>
+        </div>
+      </div>
+    </div><div class="lesson-nav" data-nav></div>
+  </div>
+</section>
+
+<section class="slide" id="s20" data-title="Conexión de componentes electrónicos">
+  <div class="canvas"><div class="slide-eyebrow"><div class="eyebrow orange">Conexión</div></div>
+    <div class="content two-col wide-left" style="align-items:stretch">
+      <div style="display:grid;gap:.8cqw;align-content:center">
+        <h2>2. Conexión de componentes electrónicos</h2>
+        <p class="lead">Conecta los LEDs a los puertos B y E de Octabio y el sensor de luz al puerto F, como se muestra en la imagen.</p>
+        <p>Para conectar los módulos externos a Octabio, tanto sensores como actuadores, puedes usar cables con conector <b>Grove</b> de 4 pines. Alinea las líneas en los conectores del cable a las ranuras correspondientes en los conectores de los módulos y de Octabio. Al conectarlo, asegúrate de que cada extremo del cable queda bien insertado, haciendo un poco de presión, hasta que haga un <b>"click"</b>, como se muestra en las siguientes imágenes.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8cqw">
+          <img class="slide-side-img" style="max-height:9cqw;width:auto;display:block;margin-inline:auto" src="assets/img/connector1.png" alt="Conexión del cable Grove a Octabio">
+          <img class="slide-side-img" style="max-height:9cqw;width:auto;display:block;margin-inline:auto" src="assets/img/connector2.png" alt="Conexión del cable Grove al módulo">
+        </div>
+              </div>
+      <div style="display:grid;place-items:center;gap:1.6cqw">
+        <img class="slide-side-img" style="max-height:25.9cqw;width:auto;display:block;margin-inline:auto" src="assets/img/conexion.png" alt="Diagrama de conexión: LEDs en B y E, sensor en F">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:1cqw;align-items:center;width:100%">
+          <p style="font-size:var(--fs-body)">Pasa los cables por los espacios de la parte trasera de la estructura.</p>
+          <img class="slide-side-img" style="max-height:6cqw;width:auto;display:block;margin-inline:auto" src="assets/img/atras.png" alt="Cables pasando por la parte trasera de la estructura">
+        </div>
+      </div>
+    </div><div class="lesson-nav" data-nav></div>
+  </div>
+</section>
+
+<section class="slide" id="s21" data-title="Programación del robot">
+  <div class="canvas"><div class="slide-eyebrow"><div class="eyebrow orange">Programación</div></div>
+    <div class="content two-col wide-left" style="align-items:stretch">
+      <div style="display:grid;gap:.9cqw;align-content:center">
+        <h2>3. Programación del robot</h2>
+        <p class="lead">Programa a Octabio para que revise continuamente la luz del ambiente.</p>
+        <p>Dentro de un bloque <b>para siempre</b>, lee el valor de la <b>fotocelda</b> conectada al puerto <b>F</b> y muéstralo en la pantalla.</p>
+        <p>Después usa un <b>condicional doble</b>: si el valor de la fotocelda es <b>menor que 30</b>, enciende los <b>LEDs</b> de los postes conectados a los puertos <b>B</b> y <b>E</b> y el <b>aro NeoPixel</b> de Octabio de color <b>blanco</b>; si no, si el valor es <b>30 o mayor</b>, apaga todas las luces.</p>
+        <p>Al final agrega una espera corta de <b>0,2 segundos</b> para controlar la velocidad del programa.</p>
+        <div class="pista-box"><span class="note-icon">i</span><p>Recuerda que antes de mostrar un texto en pantalla debes <b>limpiarla</b>; si no, se van a sobreponer los mensajes y no podrás leer lo que dicen.</p></div>
+      </div>
+      <div style="display:grid;place-items:center">
+        <img class="slide-side-img" style="width:100%;height:auto;max-height:none" src="assets/img/alumbrado.gif" alt="Sistema de alumbrado inteligente funcionando en el parque">
+      </div>
+    </div><div class="lesson-nav" data-nav></div>
+  </div>
+</section>
+
+
+
+<section class="slide" id="s23" data-title="Pruebas y ajuste del umbral">
+  <div class="canvas"><div class="slide-eyebrow"><div class="eyebrow purple">Director de pruebas</div></div>
+    <div class="content" style="display:grid;gap:1cqw">
+      <div class="two-col wide-left" style="align-items:stretch">
+        <div style="display:grid;gap:.9cqw">
+          <h2>4. Prueba y ajusta hasta que funcione</h2>
+          <ul class="check-list">
+            <li>Cubre poco a poco la fotocelda y observa qué ocurre.</li>
+            <li>Verifica que el valor del umbral active el encendido justo cuando oscurece.</li>
+            <li>Retira la mano y confirma que los LEDs se apagan.</li>
+          </ul>
+        </div>
+        <div style="display:grid;place-items:center">
+          <img class="slide-side-img" style="width:100%;height:auto;max-height:none" src="assets/img/alumbrado.gif" alt="Sistema de alumbrado inteligente funcionando">
+        </div>
+      </div>
+      <div class="three-col" style="align-items:stretch">
+        <div class="card white"><h3>¿Los LEDs no encienden?</h3><p>Puede ser una conexión floja o que el programa controle un puerto distinto al que usaste.</p><p class="key-q"><b>Solución:</b> revisa las conexiones y verifica el puerto; vuelve a subir el código.</p></div>
+        <div class="card white"><h3>¿La fotocelda no funciona?</h3><p>El sensor no está bien conectado o lees el puerto incorrecto; el valor del umbral puede no corresponder.</p><p class="key-q"><b>Solución:</b> verifica el puerto y observa los valores para ajustar el umbral.</p></div>
+        <div class="card white"><h3>¿Luces invertidas?</h3><p>Los bloques están invertidos dentro del si / si no o usas mayor que en lugar de menor que.</p><p class="key-q"><b>Solución:</b> revisa la comparación: el encendido debe ocurrir cuando el valor indique menor luz.</p></div>
+      </div>
+    </div><div class="lesson-nav" data-nav></div>
+  </div>
+</section>
+
+
+
+
+
+</main>
+<div id="toast" role="status"></div>
+<div class="completion-modal" id="completionModal" role="dialog" aria-modal="true"><div class="completion-card"><h2>¡Lección terminada!</h2><p>Terminaste la Guía 4. Ya puedes leer el mundo con sensores, separar estados con umbrales y tomar decisiones con condicionales.</p><button id="closeCompletion">Volver a empezar</button></div></div>
+
+  <div id="scratchEditor" class="shared-editor"><iframe src="https://feat-dynamic-env.octabio-blocks.pages.dev/?env=scratch" title="Editor Scratch de Octabio" allowfullscreen loading="lazy"></iframe></div>
+  <div id="octabioEditor" class="shared-editor"><iframe src="https://blocks.octabio.co?id=guia4-proyectos" title="Editor Octabio Blocks" allow="clipboard-write" loading="lazy"></iframe></div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];let currentSlide=0,activeSlide=null;const labControllers=[];
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show-toast');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show-toast'),2400)}
+  function pauseAllLabs(){labControllers.forEach(c=>c.pause?.())}
+  function goToSlide(i){pauseAllLabs();stopNarration();slides[Math.max(0,Math.min(i,slides.length-1))].scrollIntoView({behavior:'smooth',block:'start'})}
+  function navMarkup(i){const first=i===0,last=i===slides.length-1;return `${first?'<span></span>':'<button class="nav-btn prev" data-prev>Regresar</button>'}<div class="nav-progress"><i></i></div><span class="nav-count"></span><div class="ctrl-group"><button class="ctrl-btn" data-zoom-out aria-label="Reducir zoom" title="Reducir zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M8 11h6"/></svg></button><button class="ctrl-btn" data-zoom-fit aria-label="Ajustar zoom" title="Ajustar zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="6" width="16" height="12"/></svg></button><button class="ctrl-btn" data-zoom-in aria-label="Aumentar zoom" title="Aumentar zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></button><button class="ctrl-btn" data-fullscreen aria-label="Pantalla completa" title="Pantalla completa"><svg class="fs-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg><svg class="fs-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M8 3v5H3M16 3v5h5M8 21v-5H3M16 21v-5h5"/></svg></button><button class="ctrl-btn" data-narrate aria-label="Leer diapositiva" title="Leer diapositiva"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 5 6 9H3v6h3l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M18.2 5.8a8.5 8.5 0 0 1 0 12.4"/></svg></button></div><button class="nav-btn ${last?'finish':''}" ${last?'data-finish':'data-next'}>${last?'Terminar lección':'Continuar'}</button>`}
+  document.querySelectorAll('[data-nav]').forEach((n,i)=>n.innerHTML=navMarkup(i));
+  document.addEventListener('click',e=>{if(e.target.closest('[data-next]'))goToSlide(currentSlide+1);if(e.target.closest('[data-prev]'))goToSlide(currentSlide-1);if(e.target.closest('[data-finish]'))document.getElementById('completionModal').classList.add('show')});
+  const observer=new IntersectionObserver(entries=>{const v=entries.filter(x=>x.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(!v)return;currentSlide=slides.indexOf(v.target);activeSlide=v.target;slides.forEach((s,i)=>{const bar=s.querySelector('.nav-progress i'),count=s.querySelector('.nav-count');if(bar)bar.style.width=`${((currentSlide+1)/slides.length)*100}%`;if(count)count.textContent=`${currentSlide+1} / ${slides.length}`});document.title=`${v.target.dataset.title} · MAMUS`;labControllers.forEach(c=>{if(c.slide&&!v.target.contains(c.slide))c.pause?.()});syncEditors()},{threshold:[.55,.75]});slides.forEach(s=>observer.observe(s));
+  function syncEditors(){['scratch','octabio'].forEach(type=>{const ed=document.getElementById(type+'Editor');if(!ed)return;const slot=activeSlide?.querySelector(`.shared-slot[data-editor="${type}"]`);if(!slot){ed.classList.remove('active');return}const r=slot.getBoundingClientRect();ed.style.left=r.left+'px';ed.style.top=r.top+'px';ed.style.width=r.width+'px';ed.style.height=r.height+'px';ed.classList.add('active')})}window.addEventListener('resize',syncEditors);let syncTimer=null;document.addEventListener('scroll',()=>{document.querySelectorAll('.shared-editor').forEach(x=>x.classList.remove('active'));clearTimeout(syncTimer);syncTimer=setTimeout(syncEditors,100)},{capture:true,passive:true});
+  document.addEventListener('keydown',e=>{const active=document.activeElement;if(['INPUT','TEXTAREA','SELECT'].includes(active?.tagName))return;if(e.key==='ArrowRight'||e.key==='PageDown')goToSlide(currentSlide+1);if(e.key==='ArrowLeft'||e.key==='PageUp')goToSlide(currentSlide-1)});
+  const zoom={v:1,min:.55,max:1.8,step:.15};function applyZoom(v){zoom.v=Math.max(zoom.min,Math.min(zoom.max,Math.round(v*100)/100));document.getElementById('deck').style.setProperty('--zoom',zoom.v);document.documentElement.classList.toggle('zoomed',zoom.v!==1)}
+  document.addEventListener('click',e=>{if(e.target.closest('[data-zoom-in]'))applyZoom(zoom.v+zoom.step);if(e.target.closest('[data-zoom-out]'))applyZoom(zoom.v-zoom.step);if(e.target.closest('[data-zoom-fit]'))applyZoom(1);if(e.target.closest('[data-fullscreen]')){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.().catch(()=>{})}if(e.target.closest('[data-narrate]')){speechSynthesis.speaking?stopNarration():startNarration()}});
+  document.addEventListener('fullscreenchange',()=>document.querySelectorAll('[data-fullscreen]').forEach(b=>b.classList.toggle('fs-active',!!document.fullscreenElement)));
+  function narrationText(){const c=slides[currentSlide].cloneNode(true);c.querySelectorAll('.lesson-nav,.slide-eyebrow,button,[aria-hidden="true"]').forEach(x=>x.remove());return(c.textContent||'').replace(/\s+/g,' ').trim()}
+  function startNarration(){if(!('speechSynthesis'in window)){toast('Tu navegador no soporta narración.');return}const u=new SpeechSynthesisUtterance(narrationText());u.lang='es';u.rate=.98;u.onend=()=>document.querySelectorAll('[data-narrate]').forEach(b=>b.classList.remove('narr-on'));speechSynthesis.cancel();speechSynthesis.speak(u);document.querySelectorAll('[data-narrate]').forEach(b=>b.classList.add('narr-on'))}
+  function stopNarration(){if('speechSynthesis'in window)speechSynthesis.cancel();document.querySelectorAll('[data-narrate]').forEach(b=>b.classList.remove('narr-on'))}
+  document.getElementById('closeCompletion').onclick=()=>document.getElementById('completionModal').classList.remove('show');document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseAllLabs();stopNarration()}});
+  
+  document.querySelectorAll('.quick-check').forEach(card=>card.addEventListener('click',e=>{const b=e.target.closest('[data-choice]');if(!b)return;const ok=b.dataset.choice===card.dataset.answer;const f=card.querySelector('.feedback');f.className=`feedback ${ok?'ok':'bad'}`;f.textContent=ok?(card.dataset.ok||'¡Correcto!'):(card.dataset.bad||'Revisa la idea y vuelve a intentarlo.')}));
+  
+  // Navegador de imágenes de construcción (estructura)
+  (function(){
+    const labels=['Instrucciones','Materiales','Materiales','Paso 1 y 2','Paso 3 y 4','Paso 5 y 6','Paso 7 y 8','Paso 9 y 10','Paso 11','Paso 12','Paso 13','Paso 14','Paso 15','Paso 16','Paso 17','Paso 18','Paso 19 y 20','Paso 21','Paso 22 y 23','Paso 24','Paso 25','Paso 26','Estructura final'];
+    const imgs=[{type:'intro',label:labels[0]}];
+    for(let k=1;k<=21;k++) imgs.push({type:'img',src:'assets/img/estructura/'+k+'_4x.png', label:labels[k]});
+    imgs.push({type:'img',src:'assets/img/estructura/Portada Manual.png', label:labels[22]});
+    const img=document.getElementById('estructuraImg'),intro=document.getElementById('estructuraIntro'),lab=document.getElementById('estructuraLabel'),prev=document.getElementById('estructuraPrev'),next=document.getElementById('estructuraNext');
+    if(!img)return;
+    let idx=0;
+    function show(){
+      const isIntro=imgs[idx].type==='intro';
+      img.style.display=isIntro?'none':'block';
+      intro.style.display=isIntro?'grid':'none';
+      if(!isIntro) img.src=imgs[idx].src;
+      if(lab) lab.textContent=imgs[idx].label;
+      prev.disabled=idx===0; next.disabled=idx===imgs.length-1;
+    }
+    prev.addEventListener('click',()=>{if(idx>0){idx--;show()}});
+    next.addEventListener('click',()=>{if(idx<imgs.length-1){idx++;show()}});
+    show();
+  })();
+  
+  // Bitácora de salida
+  const ref=document.getElementById('reflectionText');if(ref){ref.value=localStorage.getItem('mamus-robotica-guia3-reflexion')||'';const saveBtn=document.getElementById('saveReflection');if(saveBtn)saveBtn.onclick=()=>{localStorage.setItem('mamus-robotica-guia3-reflexion',ref.value.trim());const f=document.getElementById('reflectionFeedback');if(f){f.className='feedback ok';f.textContent='Reflexión guardada en este navegador.'}}}
+  // MiniTest
+  const quiz=[
+    {q:'En el sistema de alumbrado, ¿qué papel cumple la fotocelda?',o:['Enciende y apaga los LEDs del poste','Mide la luz del ambiente y entrega un valor al programa','Almacena la energía del proyecto','Muestra el valor en la pantalla'],a:1,f:'La fotocelda es el sensor: convierte la luz del ambiente en un valor que el programa compara.'},
+    {q:'¿Qué significa que el umbral del sistema sea 30?',o:['Que Octabio siempre usa el puerto 30','Que el LED se apaga a los 30 minutos','Que la fotocelda se calibra cada 30 segundos','Que por debajo de 30 se considera oscuro y se enciende la luz'],a:3,f:'El umbral separa dos estados: los valores menores indican poca luz y activan el encendido.'},
+    {q:'¿Por qué para encender se usa "menor que" en lugar de "mayor que" al comparar la lectura?',o:['El LED necesita valores altos para poder funcionar','El sensor solo reconoce números bajos del ambiente','La poca luz da valores bajos, que activan el encendido','El puerto B exige esa comparación al conectarlo'],a:2,f:'Con menos luz la fotocelda da valores más bajos; por eso el encendido ocurre cuando el valor es menor que el umbral.'},
+    {q:'Antes de programar, ¿qué debes verificar de las conexiones con cables Grove?',o:['Que los cables tengan el mismo color de los LEDs','Que cada módulo esté en el puerto que usará el programa','Que Octabio tenga la batería totalmente cargada','Que el aro NeoPixel esté desmontado del poste'],a:1,f:'El programa controla puertos específicos; si el módulo está en otro puerto, no funcionará.'},
+    {q:'¿Para qué sirve la espera de 0,2 segundos dentro del bloque "para siempre"?',o:['Para apagar las luces durante un momento corto','Para que la pantalla muestre el texto del programa','Para evitar que el LED se caliente demasiado','Para que el programa revise el sensor de forma estable'],a:3,f:'La espera corta evita que el bucle corra tan rápido que sature el programa; controla la velocidad de revisión.'}
+  ];let qi=0,qa=Array(quiz.length).fill(null),qc=Array(quiz.length).fill(false);const qNav=document.getElementById('quizNav'),qBox=document.getElementById('quizQuestion'),qFeed=document.getElementById('quizFeedback'),qBtn=document.getElementById('checkAnswer'),qPrev=document.getElementById('quizPrev'),qNext=document.getElementById('quizNext');function renderQuiz(){qNav.innerHTML=quiz.map((q,i)=>`<button class="quiz-dot ${i===qi?'active':''} ${qc[i]?(qa[i]===q.a?'ok':'bad'):''}" data-q="${i}">Pregunta ${i+1}${qc[i]?(qa[i]===q.a?' ✓':' ✗'):''}</button>`).join('');const q=quiz[qi];qBox.innerHTML=`<h3>${qi+1}. ${q.q}</h3><div class="answers ${qc[qi]?'locked':''}">${q.o.map((x,i)=>`<label class="answer"><input type="radio" name="quizA" value="${i}" ${qa[qi]===i?'checked':''} ${qc[qi]?'disabled':''}><span>${x}</span></label>`).join('')}</div>`;if(qc[qi]){const ok=qa[qi]===q.a;qFeed.className=`feedback-box ${ok?'ok':'bad'}`;qFeed.innerHTML=`<b>${ok?'Respuesta correcta.':'La respuesta correcta es: '+q.o[q.a]}</b><br>${q.f}`}else{qFeed.className='feedback-box';qFeed.textContent='Selecciona una respuesta y comprueba tu elección.'}qPrev.disabled=qi===0;qNext.disabled=qi===quiz.length-1}qNav.onclick=e=>{const b=e.target.closest('[data-q]');if(b){qi=Number(b.dataset.q);renderQuiz()}};qBtn.onclick=()=>{if(qc[qi])return;const s=document.querySelector('input[name="quizA"]:checked');if(!s){qFeed.className='feedback-box bad';qFeed.textContent='Selecciona una opción.';return}qa[qi]=Number(s.value);qc[qi]=true;renderQuiz();if(qc.every(Boolean))reportQuiz()};qPrev.onclick=()=>{if(qi>0){qi--;renderQuiz()}};qNext.onclick=()=>{if(qi<quiz.length-1){qi++;renderQuiz()}};function reportQuiz(){if(!('MamusGuide' in window))return;const total=qa.length,correct=qa.reduce((n,ans,i)=>n+(ans===quiz[i].a?1:0),0);try{window.MamusGuide.notifyFormative({slideId:'minitest',actividad:'minitest-guia4',acierto:correct===total})}catch(e){}try{window.MamusGuide.completeChallenge()}catch(e){}};renderQuiz();
+  </script>
+</body>
+</html>
